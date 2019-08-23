@@ -47,9 +47,10 @@ escape-string-regexp@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-esm@^3.0.48:
-  version "3.0.48"
-  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.48.tgz#24bf3834428b44cac7d953bb5b196d2e4ec0d815"
+esm@^3.2.25:
+  version "3.2.25"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
+  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -70,13 +71,14 @@ growl@1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.3.tgz#1926ba90cf3edfe2adb4927f5880bc22c66c790f"
 
-hamjest@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/hamjest/-/hamjest-3.1.0.tgz#36efda5744588195e02ffcbfaf027adbe01b3da2"
+hamjest@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/hamjest/-/hamjest-3.2.5.tgz#2485129d57908f09ce946ef05b4bcd7995ccec18"
+  integrity sha512-zjWoun5V1XVHWDvYKvQote7eMYnH8nCkrfDVhmRFVJg3inqI3hjn6/QE1ro0K9fbrrFO1G/wdUzkBBZx6p0eFw==
   dependencies:
     assertion-error "~1.0.0"
     bluebird "^3.3.4"
-    lodash "^3.6.0"
+    lodash "^4.17.15"
 
 has-flag@^2.0.0:
   version "2.0.0"
@@ -97,9 +99,10 @@ inherits@2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
-lodash@^3.6.0:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+lodash@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 minimatch@^3.0.4:
   version "3.0.4"
