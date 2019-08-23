@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "mocha --opts mocha.opts"
+    "test": "mocha"
   },
   "private": true,
   "dependencies": {
