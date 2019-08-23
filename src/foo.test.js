@@ -1,15 +1,40 @@
 import * as r from 'ramda'
 import * as __ from 'hamjest'
 
-const createType = (props) => {
+const getGetterEnhancers = r.pipe(
+  r.map((x) => ({ [x.name]: x.get })),
+  r.mergeAll,
+  r.reject(r.isNil)
+)
+
+const createType = (propDefs) => {
+  const normalizedPropDefs = r.pipe(
+    () => propDefs,
+    r.map(r.unless(r.is(Object))(r.objOf('name')))
+  )()
   const _props = r.pipe(
-    () => props,
+    () => normalizedPropDefs,
+    r.map(r.prop('name')),
     r.map((x) => ({ [x]: x })),
     r.mergeAll
   )()
+  const rawGet = r.map(r.prop)(_props)
+
   return {
     props: r.map(r.always)(_props),
-    get: r.map(r.prop)(_props),
+    get: r.mergeAll([
+      rawGet,
+      r.pipe(
+        () => normalizedPropDefs,
+        getGetterEnhancers,
+        r.mapObjIndexed((fn, prop) =>
+          r.pipe(
+            rawGet[prop],
+            fn
+          )
+        )
+      )()
+    ]),
     pick: r.map((x) => r.pick([x]))(_props),
     set: r.map(r.assoc)(_props)
   }
@@ -34,6 +59,20 @@ describe('KISS type', () => {
           __.is({ prop: 0 })
         )
       })
+    })
+  })
+
+  describe('with prop defined in extended form', () => {
+    const type = createType([{ name: 'prop' }])
+    it('exposes all the same facilities as when prop is defined in basic form', () => {
+      __.assertThat(type.get.prop({ prop: 42 }), __.is(42))
+    })
+  })
+
+  describe('with getter enhancer', () => {
+    const type = createType([{ name: 'prop', get: r.defaultTo(0) }])
+    it('applies enhancer upon raw value', () => {
+      __.assertThat(type.get.prop({}), __.is(0))
     })
   })
 })
