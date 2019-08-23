@@ -6,6 +6,7 @@ const createType = (props) => {
   return {
     props: r.map(r.always)(_props),
     get: r.map(r.prop)(_props),
+    pick: r.map((x) => r.pick([x]))(_props),
     set: r.map(r.assoc)(_props)
   }
 }
@@ -21,6 +22,14 @@ describe('KISS type', () => {
     })
     it('gives write access to properties', () => {
       __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(0))
+    })
+    describe('adopts Ramda lingo', () => {
+      it('#pick', () => {
+        __.assertThat(
+          type.pick.prop({ prop: 0, sthElse: null }),
+          __.is({ prop: 0 })
+        )
+      })
     })
   })
 })
