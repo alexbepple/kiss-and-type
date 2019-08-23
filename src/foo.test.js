@@ -40,6 +40,7 @@ const createType = (propDefs) => {
     r.map((x) => ({ [x.publicName]: x.privateName })),
     r.mergeAll
   )()
+
   const rawGet = r.map(r.prop)(nameMap)
   const get = r.mergeAll([
     rawGet,
@@ -55,12 +56,12 @@ const createType = (propDefs) => {
     )()
   ])
 
+  const pickOne = (prop) => (obj) => ({ [prop]: get[prop](obj) })
+
   return {
     props: r.map(r.always)(nameMap),
     get,
-    pick: r.map((privateName) => (obj) => ({
-      [privateName]: get[privateName](obj)
-    }))(nameMap),
+    pick: r.map(pickOne)(nameMap),
     set: r.map(r.assoc)(nameMap)
   }
 }
