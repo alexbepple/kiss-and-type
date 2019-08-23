@@ -9,15 +9,20 @@ const getOnlyValue = r.pipe(
   r.values,
   r.head
 )
+const toArrayIfNecessary = r.pipe(
+  r.of,
+  r.unnest
+)
 
 const canonizePropDef = r.pipe(
   r.when(r.is(String))((propName) => ({ [propName]: {} })),
   (nestedDef) =>
     r.merge(getOnlyValue(nestedDef), { privateName: getOnlyKey(nestedDef) }),
-  r.merge({ aliases: [] }),
+  r.evolve({ alias: toArrayIfNecessary }),
+  r.merge({ alias: [] }),
   (def) =>
     r.pipe(
-      () => r.concat(def.aliases, [def.privateName]),
+      () => r.concat(def.alias, [def.privateName]),
       r.map((publicName) => r.assoc('publicName', publicName, def))
     )()
 )
@@ -95,10 +100,10 @@ describe('KISS type', () => {
   })
 
   describe('with alias', () => {
-    const type = createType([{ prop: { aliases: ['alias'] } }])
+    const type = createType([{ prop: { alias: 'anAlias' } }])
 
     it('gives read access to property through alias', () => {
-      __.assertThat(type.get.alias({ prop: 42 }), __.is(42))
+      __.assertThat(type.get.anAlias({ prop: 42 }), __.is(42))
     })
   })
 })
@@ -136,10 +141,18 @@ describe('Canonical prop definition', () => {
       )
     })
   })
+  describe('from extended definition with one alias', () => {
+    it('is just a shorthand', () => {
+      __.assertThat(
+        canonizePropDef({ prop: { alias: ['alias'] } }),
+        __.is(canonizePropDef({ prop: { alias: 'alias' } }))
+      )
+    })
+  })
   describe('from extended definition with aliases', () => {
     it('derives public and private names', () => {
       __.assertThat(
-        canonizePropDef({ prop: { aliases: ['alias'] } }),
+        canonizePropDef({ prop: { alias: ['alias'] } }),
         __.allOf(
           __.everyItem(__.hasProperties({ privateName: 'prop' })),
           __.containsInAnyOrder(
@@ -151,7 +164,7 @@ describe('Canonical prop definition', () => {
     })
     it('preserves other props', () => {
       __.assertThat(
-        canonizePropDef({ prop: { aliases: ['alias'], get: 'fdsa' } }),
+        canonizePropDef({ prop: { alias: ['alias'], get: 'fdsa' } }),
         __.everyItem(__.hasProperty('get'))
       )
     })
