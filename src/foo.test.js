@@ -2,13 +2,14 @@ import * as r from 'ramda'
 import * as __ from 'hamjest'
 
 const canonizePropDef = r.pipe(
-  r.when(r.is(String))((def) => ({ name: def })),
-  (withName) =>
-    r.pipe(
-      () => ({ publicName: withName.name, privateName: withName.name }),
-      r.merge(withName),
-      r.dissoc('name')
-    )()
+  r.when(r.is(String))((def) => ({ [def]: {} })),
+  (inObjectForm) => {
+    const name = r.pipe(
+      r.keys,
+      r.head
+    )(inObjectForm)
+    return r.merge(inObjectForm[name], { publicName: name, privateName: name })
+  }
 )
 
 const getGetterEnhancers = r.pipe(
@@ -73,7 +74,7 @@ describe('KISS type', () => {
   })
 
   describe('with getter enhancer', () => {
-    const type = createType([{ name: 'prop', get: r.defaultTo(0) }])
+    const type = createType([{ prop: { get: r.defaultTo(0) } }])
 
     it('applies enhancer upon raw value', () => {
       __.assertThat(type.get.prop({}), __.is(0))
@@ -82,35 +83,35 @@ describe('KISS type', () => {
       __.assertThat(type.pick.prop({}), __.is({ prop: 0 }))
     })
   })
+})
 
-  describe('Canonical prop definition', () => {
-    describe('can be derived from basic prop definition (just a string)', () => {
-      it('derives public and private names', () => {
-        __.assertThat(
-          canonizePropDef('prop'),
-          __.hasProperties({
-            publicName: 'prop',
-            privateName: 'prop'
-          })
-        )
-      })
+describe('Canonical prop definition', () => {
+  describe('can be derived from basic prop definition (just a string)', () => {
+    it('derives public and private names', () => {
+      __.assertThat(
+        canonizePropDef('prop'),
+        __.hasProperties({
+          publicName: 'prop',
+          privateName: 'prop'
+        })
+      )
     })
-    describe('can be derived from temporary extended definition', () => {
-      it('derives public and private names', () => {
-        __.assertThat(
-          canonizePropDef({ name: 'prop' }),
-          __.allOf(
-            __.hasProperties({ publicName: 'prop', privateName: 'prop' }),
-            __.not(__.hasProperty('name'))
-          )
-        )
-      })
-      it('preserves other props', () => {
-        __.assertThat(
-          canonizePropDef({ name: 'foo', get: 'bar' }),
-          __.hasProperty('get')
-        )
-      })
+  })
+  describe('can be derived from extended definition', () => {
+    it('derives public and private names', () => {
+      __.assertThat(
+        canonizePropDef({ prop: {} }),
+        __.hasProperties({
+          publicName: 'prop',
+          privateName: 'prop'
+        })
+      )
+    })
+    it('preserves other props', () => {
+      __.assertThat(
+        canonizePropDef({ prop: { get: 'fdsa' } }),
+        __.hasProperties({ get: 'fdsa' })
+      )
     })
   })
 })
