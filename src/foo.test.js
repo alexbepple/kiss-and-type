@@ -5,7 +5,8 @@ const createType = (props) => {
   const _props = r.mergeAll(r.map((x) => r.objOf(x, x))(props))
   return {
     props: r.map(r.always)(_props),
-    get: r.map(r.prop)(_props)
+    get: r.map(r.prop)(_props),
+    set: r.map(r.assoc)(_props)
   }
 }
 
@@ -15,8 +16,11 @@ describe('KISS type', () => {
     it('exposes property names', () => {
       __.assertThat(type.props.prop(), __.is('prop'))
     })
-    it('gives property access', () => {
+    it('gives read access to properties', () => {
       __.assertThat(type.get.prop({ prop: 42 }), __.is(42))
+    })
+    it('gives write access to properties', () => {
+      __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(0))
     })
   })
 })
