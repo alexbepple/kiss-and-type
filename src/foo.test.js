@@ -19,23 +19,24 @@ const createType = (propDefs) => {
     r.mergeAll
   )()
   const rawGet = r.map(r.prop)(_props)
+  const get = r.mergeAll([
+    rawGet,
+    r.pipe(
+      () => normalizedPropDefs,
+      getGetterEnhancers,
+      r.mapObjIndexed((fn, prop) =>
+        r.pipe(
+          rawGet[prop],
+          fn
+        )
+      )
+    )()
+  ])
 
   return {
     props: r.map(r.always)(_props),
-    get: r.mergeAll([
-      rawGet,
-      r.pipe(
-        () => normalizedPropDefs,
-        getGetterEnhancers,
-        r.mapObjIndexed((fn, prop) =>
-          r.pipe(
-            rawGet[prop],
-            fn
-          )
-        )
-      )()
-    ]),
-    pick: r.map((x) => r.pick([x]))(_props),
+    get,
+    pick: r.map((prop) => (obj) => ({ [prop]: get[prop](obj) }))(_props),
     set: r.map(r.assoc)(_props)
   }
 }
@@ -43,6 +44,7 @@ const createType = (propDefs) => {
 describe('KISS type', () => {
   describe('in its most basic form', () => {
     const type = createType(['prop'])
+
     it('exposes property names', () => {
       __.assertThat(type.props.prop(), __.is('prop'))
     })
@@ -64,6 +66,7 @@ describe('KISS type', () => {
 
   describe('with prop defined in extended form', () => {
     const type = createType([{ name: 'prop' }])
+
     it('exposes all the same facilities as when prop is defined in basic form', () => {
       __.assertThat(type.get.prop({ prop: 42 }), __.is(42))
     })
@@ -71,8 +74,12 @@ describe('KISS type', () => {
 
   describe('with getter enhancer', () => {
     const type = createType([{ name: 'prop', get: r.defaultTo(0) }])
+
     it('applies enhancer upon raw value', () => {
       __.assertThat(type.get.prop({}), __.is(0))
+    })
+    it('uses enhancer for #pick', () => {
+      __.assertThat(type.pick.prop({}), __.is({ prop: 0 }))
     })
   })
 })
