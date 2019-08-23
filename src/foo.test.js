@@ -3,12 +3,23 @@ import * as __ from 'hamjest'
 
 const canonizePropDef = r.pipe(
   r.when(r.is(String))((def) => ({ [def]: {} })),
-  (inObjectForm) => {
-    const name = r.pipe(
+  (def) => {
+    const privateName = r.pipe(
       r.keys,
       r.head
-    )(inObjectForm)
-    return r.merge(inObjectForm[name], { publicName: name, privateName: name })
+    )(def)
+    return r.merge(def[privateName], {
+      publicName: privateName,
+      privateName: privateName
+    })
+  },
+  (def) => {
+    const allPublicNames = r.concat(r.defaultTo([])(def.aliases), [
+      def.publicName
+    ])
+    return r.map((publicName) => r.assoc('publicName', publicName, def))(
+      allPublicNames
+    )
   }
 )
 
@@ -19,7 +30,7 @@ const getGetterEnhancers = r.pipe(
 )
 
 const createType = (propDefs) => {
-  const canonicalPropDefs = r.map(canonizePropDef)(propDefs)
+  const canonicalPropDefs = r.chain(canonizePropDef)(propDefs)
   const nameMap = r.pipe(
     () => canonicalPropDefs,
     r.map((x) => ({ [x.publicName]: x.privateName })),
@@ -54,13 +65,13 @@ describe('KISS type', () => {
   describe('in its most basic form', () => {
     const type = createType(['prop'])
 
-    it('exposes property names', () => {
+    it('exposes property name', () => {
       __.assertThat(type.props.prop(), __.is('prop'))
     })
-    it('gives read access to properties', () => {
+    it('gives read access to property', () => {
       __.assertThat(type.get.prop({ prop: 42 }), __.is(42))
     })
-    it('gives write access to properties', () => {
+    it('gives write access to property', () => {
       __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(0))
     })
     describe('adopts Ramda lingo', () => {
@@ -83,34 +94,66 @@ describe('KISS type', () => {
       __.assertThat(type.pick.prop({}), __.is({ prop: 0 }))
     })
   })
+
+  describe('with alias', () => {
+    const type = createType([{ prop: { aliases: ['alias'] } }])
+
+    it('gives read access to property through alias', () => {
+      __.assertThat(type.get.alias({ prop: 42 }), __.is(42))
+    })
+  })
 })
 
 describe('Canonical prop definition', () => {
-  describe('can be derived from basic prop definition (just a string)', () => {
+  describe('from basic prop definition (just a string)', () => {
     it('derives public and private names', () => {
       __.assertThat(
         canonizePropDef('prop'),
-        __.hasProperties({
-          publicName: 'prop',
-          privateName: 'prop'
-        })
+        __.contains(
+          __.hasProperties({
+            publicName: 'prop',
+            privateName: 'prop'
+          })
+        )
       )
     })
   })
-  describe('can be derived from extended definition', () => {
+  describe('from extended definition without aliases', () => {
     it('derives public and private names', () => {
       __.assertThat(
         canonizePropDef({ prop: {} }),
-        __.hasProperties({
-          publicName: 'prop',
-          privateName: 'prop'
-        })
+        __.contains(
+          __.hasProperties({
+            publicName: 'prop',
+            privateName: 'prop'
+          })
+        )
       )
     })
     it('preserves other props', () => {
       __.assertThat(
         canonizePropDef({ prop: { get: 'fdsa' } }),
-        __.hasProperties({ get: 'fdsa' })
+        __.contains(__.hasProperties({ get: 'fdsa' }))
+      )
+    })
+  })
+  describe('from extended definition with aliases', () => {
+    it('derives public and private names', () => {
+      __.assertThat(
+        canonizePropDef({ prop: { aliases: ['alias'] } }),
+        __.allOf(
+          __.everyItem(__.hasProperties({ privateName: 'prop' })),
+          __.containsInAnyOrder(
+            __.hasProperties({ publicName: 'prop' }),
+            __.hasProperties({ publicName: 'alias' })
+          )
+        )
+      )
+    })
+    it('preserves other props', () => {
+      __.assertThat(
+        canonizePropDef({ prop: { aliases: ['alias'], get: 'fdsa' } }),
+        __.everyItem(__.hasProperty('get'))
       )
     })
   })
