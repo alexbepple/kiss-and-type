@@ -101,9 +101,22 @@ describe('KISS type', () => {
 
   describe('with alias', () => {
     const type = createType([{ prop: { alias: 'anAlias' } }])
+    const obj = { prop: 42 }
 
-    it('gives read access to property through alias', () => {
-      __.assertThat(type.get.anAlias({ prop: 42 }), __.is(42))
+    it('uses alias as a synonym for direct access', () => {
+      __.assertThat(type.get.anAlias(obj), __.is(type.get.prop(obj)))
+    })
+    it('and otherwise', () => {
+      __.assertThat(type.pick.anAlias(obj), __.is(type.pick.prop(obj)))
+    })
+  })
+
+  describe('with alias and getter enhancer', () => {
+    const type = createType([
+      { prop: { alias: 'anAlias', get: r.defaultTo(0) } }
+    ])
+    it('applies enhancer upon raw value', () => {
+      __.assertThat(type.get.anAlias({}), __.is(0))
     })
   })
 })
