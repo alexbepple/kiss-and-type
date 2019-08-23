@@ -2,7 +2,11 @@ import * as r from 'ramda'
 import * as __ from 'hamjest'
 
 const createType = (props) => {
-  const _props = r.mergeAll(r.map((x) => r.objOf(x, x))(props))
+  const _props = r.pipe(
+    () => props,
+    r.map((x) => ({ [x]: x })),
+    r.mergeAll
+  )()
   return {
     props: r.map(r.always)(_props),
     get: r.map(r.prop)(_props),
