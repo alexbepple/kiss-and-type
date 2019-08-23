@@ -1,26 +1,25 @@
 import * as r from 'ramda'
 import * as __ from 'hamjest'
 
+const getOnlyKey = r.pipe(
+  r.keys,
+  r.head
+)
+const getOnlyValue = r.pipe(
+  r.values,
+  r.head
+)
+
 const canonizePropDef = r.pipe(
-  r.when(r.is(String))((def) => ({ [def]: {} })),
-  (def) => {
-    const privateName = r.pipe(
-      r.keys,
-      r.head
-    )(def)
-    return r.merge(def[privateName], {
-      publicName: privateName,
-      privateName: privateName
-    })
-  },
-  (def) => {
-    const allPublicNames = r.concat(r.defaultTo([])(def.aliases), [
-      def.publicName
-    ])
-    return r.map((publicName) => r.assoc('publicName', publicName, def))(
-      allPublicNames
-    )
-  }
+  r.when(r.is(String))((propName) => ({ [propName]: {} })),
+  (nestedDef) =>
+    r.merge(getOnlyValue(nestedDef), { privateName: getOnlyKey(nestedDef) }),
+  r.merge({ aliases: [] }),
+  (def) =>
+    r.pipe(
+      () => r.concat(def.aliases, [def.privateName]),
+      r.map((publicName) => r.assoc('publicName', publicName, def))
+    )()
 )
 
 const getGetterEnhancers = r.pipe(
