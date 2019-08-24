@@ -26,31 +26,23 @@ export const canonizePropDef = r.pipe(
     )()
 )
 
-const getGetterEnhancers = r.pipe(
-  r.map((x) => ({ [x.publicName]: x.get })),
-  r.mergeAll,
-  r.reject(r.isNil)
-)
-const getSetterEnhancers = r.pipe(
-  r.map((x) => ({ [x.publicName]: x.set })),
-  r.mergeAll,
-  r.reject(r.isNil)
-)
+const getDefPropByPublicName = (defProp) =>
+  r.pipe(
+    r.indexBy(r.prop('publicName')),
+    r.map(r.prop(defProp)),
+    r.reject(r.isNil)
+  )
 
 export const createType = (propDefs) => {
   const canonicalPropDefs = r.chain(canonizePropDef)(propDefs)
-  const nameMap = r.pipe(
-    () => canonicalPropDefs,
-    r.map((x) => ({ [x.publicName]: x.privateName })),
-    r.mergeAll
-  )()
+  const nameMap = getDefPropByPublicName('privateName')(canonicalPropDefs)
 
   const rawGet = r.map(r.prop)(nameMap)
   const get = r.mergeAll([
     rawGet,
     r.pipe(
       () => canonicalPropDefs,
-      getGetterEnhancers,
+      getDefPropByPublicName('get'),
       r.mapObjIndexed((fn, publicName) =>
         r.pipe(
           rawGet[publicName],
@@ -67,7 +59,7 @@ export const createType = (propDefs) => {
     rawSet,
     r.pipe(
       () => canonicalPropDefs,
-      getSetterEnhancers,
+      getDefPropByPublicName('set'),
       r.mapObjIndexed((fn, publicName) =>
         r.pipe(
           fn,
