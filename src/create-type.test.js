@@ -56,6 +56,14 @@ describe('KISS type', () => {
       __.assertThat(type.get.anAlias({}), __.is(0))
     })
   })
+
+  describe('with setter enhancer', () => {
+    const type = createType([{ prop: { set: r.inc } }])
+
+    it('applies enhancer upon given value', () => {
+      __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(1))
+    })
+  })
 })
 
 describe('Canonical prop definition', () => {

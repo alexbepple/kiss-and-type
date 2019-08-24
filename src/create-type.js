@@ -31,6 +31,11 @@ const getGetterEnhancers = r.pipe(
   r.mergeAll,
   r.reject(r.isNil)
 )
+const getSetterEnhancers = r.pipe(
+  r.map((x) => ({ [x.publicName]: x.set })),
+  r.mergeAll,
+  r.reject(r.isNil)
+)
 
 export const createType = (propDefs) => {
   const canonicalPropDefs = r.chain(canonizePropDef)(propDefs)
@@ -57,10 +62,25 @@ export const createType = (propDefs) => {
 
   const pickOne = (prop) => (obj) => ({ [prop]: get[prop](obj) })
 
+  const rawSet = r.map(r.assoc)(nameMap)
+  const set = r.mergeAll([
+    rawSet,
+    r.pipe(
+      () => canonicalPropDefs,
+      getSetterEnhancers,
+      r.mapObjIndexed((fn, publicName) =>
+        r.pipe(
+          fn,
+          rawSet[publicName]
+        )
+      )
+    )()
+  ])
+
   return {
     props: r.map(r.always)(nameMap),
     get,
     pick: r.map(pickOne)(nameMap),
-    set: r.map(r.assoc)(nameMap)
+    set
   }
 }
