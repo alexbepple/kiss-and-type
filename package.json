@@ -1,14 +1,32 @@
 {
+  "name": "kiss-and-type",
+  "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
-    "test": "mocha --require esm"
+    "test": "mocha --require esm",
+    "build": "pika build",
+    "version": "npm run build"
   },
-  "private": true,
   "dependencies": {
     "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-standard-pkg": "^0.6.0",
     "esm": "^3.2.25",
     "hamjest": "^3.2.5",
     "mocha": "^6.2.0"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg",
+        {
+          "exclude": [
+            "*.test.js"
+          ]
+        }
+      ]
+    ]
   }
 }
