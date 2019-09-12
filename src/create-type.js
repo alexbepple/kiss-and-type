@@ -73,6 +73,7 @@ export const createType = (propDefs) => {
     props: r.map(r.always)(nameMap),
     get,
     pick: r.map(pickOne)(nameMap),
-    set
+    set,
+    objOf: r.map((setFn) => (x) => setFn(x, {}))(set)
   }
 }

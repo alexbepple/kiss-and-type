@@ -22,6 +22,9 @@ describe('KISS type', () => {
           __.is({ prop: 0 })
         )
       })
+      it('#objOf', () => {
+        __.assertThat(type.objOf.prop(0), __.is(type.set.prop(0)({})))
+      })
     })
   })
 
