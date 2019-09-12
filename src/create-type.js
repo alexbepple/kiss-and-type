@@ -48,8 +48,11 @@ export const createType = (propDefs) => {
 
   return {
     props: r.map(r.always)(nameMap),
+
     get,
     pick: r.map(pickOne)(nameMap),
+    pluck: r.map(r.map)(get),
+
     set,
     objOf: r.map((setFn) => (x) => setFn(x, {}))(set)
   }

@@ -25,6 +25,12 @@ describe('KISS type', () => {
       it('#objOf', () => {
         __.assertThat(type.objOf.prop(0), __.is(type.set.prop(0)({})))
       })
+      it('#pluck', () => {
+        __.assertThat(
+          type.pluck.prop([type.objOf.prop(0), type.objOf.prop(1)]),
+          __.is([0, 1])
+        )
+      })
     })
   })
 
@@ -36,6 +42,9 @@ describe('KISS type', () => {
     })
     it('uses enhancer for #pick', () => {
       __.assertThat(type.pick.prop({}), __.is({ prop: 0 }))
+    })
+    it('uses enhancer for #pluck', () => {
+      __.assertThat(type.pluck.prop([{}]), __.is([0]))
     })
   })
 
