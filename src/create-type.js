@@ -26,23 +26,23 @@ export const canonizePropDef = r.pipe(
     )()
 )
 
-const getDefPropByPublicName = (defProp) =>
-  r.pipe(
-    r.indexBy(r.prop('publicName')),
-    r.map(r.prop(defProp)),
-    r.reject(r.isNil)
-  )
-
 export const createType = (propDefs) => {
-  const canonicalPropDefs = r.chain(canonizePropDef)(propDefs)
-  const nameMap = getDefPropByPublicName('privateName')(canonicalPropDefs)
+  const pluckDefined = (prop) =>
+    r.pipe(
+      () => propDefs,
+      r.chain(canonizePropDef),
+      r.indexBy(r.prop('publicName')),
+      r.pluck(prop),
+      r.reject(r.isNil)
+    )()
+
+  const nameMap = pluckDefined('privateName')
 
   const rawGet = r.map(r.prop)(nameMap)
   const get = r.mergeAll([
     rawGet,
     r.pipe(
-      () => canonicalPropDefs,
-      getDefPropByPublicName('get'),
+      () => pluckDefined('get'),
       r.mapObjIndexed((fn, publicName) =>
         r.pipe(
           rawGet[publicName],
@@ -58,8 +58,7 @@ export const createType = (propDefs) => {
   const set = r.mergeAll([
     rawSet,
     r.pipe(
-      () => canonicalPropDefs,
-      getDefPropByPublicName('set'),
+      () => pluckDefined('set'),
       r.mapObjIndexed((fn, publicName) =>
         r.pipe(
           fn,
