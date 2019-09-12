@@ -58,6 +58,7 @@ export const createType = (propDefs) => {
         r.complement(r.isNil)
       )
     )(get),
+    eq: r.map((fn) => r.useWith(r.equals, [r.identity, fn]))(get),
 
     set,
     objOf: r.map((setFn) => (x) => setFn(x, {}))(set)
