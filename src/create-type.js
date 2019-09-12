@@ -39,34 +39,12 @@ export const createType = (propDefs) => {
   const nameMap = pluckDefined('privateName')
 
   const rawGet = r.map(r.prop)(nameMap)
-  const get = r.mergeAll([
-    rawGet,
-    r.pipe(
-      () => pluckDefined('get'),
-      r.mapObjIndexed((fn, publicName) =>
-        r.pipe(
-          rawGet[publicName],
-          fn
-        )
-      )
-    )()
-  ])
+  const get = r.mergeWith(r.pipe)(rawGet)(pluckDefined('get'))
 
   const pickOne = (prop) => (obj) => ({ [prop]: get[prop](obj) })
 
   const rawSet = r.map(r.assoc)(nameMap)
-  const set = r.mergeAll([
-    rawSet,
-    r.pipe(
-      () => pluckDefined('set'),
-      r.mapObjIndexed((fn, publicName) =>
-        r.pipe(
-          fn,
-          rawSet[publicName]
-        )
-      )
-    )()
-  ])
+  const set = r.mergeWith(r.pipe)(pluckDefined('set'))(rawSet)
 
   return {
     props: r.map(r.always)(nameMap),
