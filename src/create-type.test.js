@@ -31,6 +31,11 @@ describe('KISS type', () => {
           __.is([0, 1])
         )
       })
+      it('#has', () => {
+        __.assertThat(type.has.prop({}), __.is(false))
+        __.assertThat(type.has.prop(type.objOf.prop(null)), __.is(false))
+        __.assertThat(type.has.prop(type.objOf.prop(0)), __.is(true))
+      })
     })
   })
 

@@ -52,6 +52,12 @@ export const createType = (propDefs) => {
     get,
     pick: r.map(pickOne)(nameMap),
     pluck: r.map(r.map)(get),
+    has: r.map((fn) =>
+      r.pipe(
+        fn,
+        r.complement(r.isNil)
+      )
+    )(get),
 
     set,
     objOf: r.map((setFn) => (x) => setFn(x, {}))(set)
