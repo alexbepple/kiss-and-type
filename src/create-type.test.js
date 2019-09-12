@@ -40,6 +40,12 @@ describe('KISS type', () => {
         __.assertThat(type.eq.prop(0)(type.objOf.prop(0)), __.is(true))
         __.assertThat(type.eq.prop(0)(type.objOf.prop(1)), __.is(false))
       })
+      it('#over', () => {
+        __.assertThat(
+          type.over.prop(r.inc)(type.objOf.prop(0)),
+          __.is(type.objOf.prop(1))
+        )
+      })
     })
   })
 

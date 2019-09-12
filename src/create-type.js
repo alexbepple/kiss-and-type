@@ -46,6 +46,8 @@ export const createType = (propDefs) => {
   const rawSet = r.map(r.assoc)(nameMap)
   const set = r.mergeWith(r.pipe)(pluckDefined('set'))(rawSet)
 
+  const lenses = r.mergeWith(r.lens)(get)(set)
+
   return {
     props: r.map(r.always)(nameMap),
 
@@ -61,6 +63,8 @@ export const createType = (propDefs) => {
     eq: r.map((fn) => r.useWith(r.equals, [r.identity, fn]))(get),
 
     set,
-    objOf: r.map((setFn) => (x) => setFn(x, {}))(set)
+    objOf: r.map((setFn) => (x) => setFn(x, {}))(set),
+
+    over: r.map(r.over)(lenses)
   }
 }
