@@ -5,6 +5,16 @@ A lightweight approach to typing in plain JavaScript.
 
 # Features
 
+## Some safety
+
+```javascript
+> fooT = createType([ 'bar' ])
+…
+> fooT.get.baz({})
+Thrown:
+TypeError: fooT.get.baz is not a function
+```
+
 ## Immutable
 
 By default, all operations are immutable.
@@ -21,7 +31,9 @@ However, immutability is not enforced in any fashion on the objects.
 { bar: 0 }
 ```
 
-## Functional composition
+## Functional programming
+
+### Composition
 
 All operations are functions that need no binding and thus lend themselves perfectly for functional composition.
 
@@ -35,7 +47,11 @@ All operations are functions that need no binding and thus lend themselves perfe
 [ 0, 1 ]
 ```
 
-`objOf`, `has` and `pluck` are derived from Ramda lingo.
+### Familiar lingo
+
+`objOf`, `has` and `pluck` in the above example are derived from Ramda lingo.
+
+So are `pick`, `eq`, `over`.
 
 
 ## Aliases
@@ -71,6 +87,10 @@ You get getters and setters out of the box. If you want, you can enhance them.
 > fooT.set.bar(0.5)({})
 { bar: 0 }
 ```
+
+## Relationships between types
+
+Interfaces, inheritance, mixins are largely unexplored at the moment. The value of this approach to typing seems to lie elsewhere, either way.
 
 
 # API
