@@ -54,7 +54,7 @@ All operations are functions that need no binding and thus lend themselves perfe
 
 ### Familiar lingo
 
-`objOf`, `has` and `pluck` in the above example are derived from Ramda lingo.
+`objOf`, `has` and `pluck` in the above example are derived from [Ramda](https://ramdajs.com/) lingo.
 
 So are `pick`, `eq`, `over`.
 
@@ -137,9 +137,9 @@ But wait, there is more. Nevermind structural typing. We need a place where to p
 
 This has always been my main motivation for types. More importantly, I naturally gravitated towards building types in this sense in JS, a language that does not exactly force such constructs on you. When building cohesive behavior, of course, you also access the same properties time and time again. 
 
-This coincided with the desire for a simple way to encapsulate property access. It was driven by the wish for some safety. This became a major concern for me when a team that I was working with was writing quite a few tests just in order to guard itself against mistyping property names. The team gave Flow a try, but found the type tax too high. – I also wanted to be able to progressively enhance the property access.
+This coincided with the desire for a simple way to encapsulate property access. It was driven by the wish for some safety. This became a major concern for me when a team that I was working with was writing quite a few tests just in order to guard itself against mistyping property names. The team gave [Flow](https://flow.org/) a try, but found the type tax too high. – I also wanted to be able to progressively enhance the property access.
 
-Finally, because of an intensive use of Ramda, functional composition became a major concern.
+Finally, because of an intensive use of [Ramda](https://ramdajs.com/), functional composition became a major concern.
 
 The marriage of these three – behavior honeypot, property access and FP – led me to this type construct.
 
