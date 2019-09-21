@@ -131,7 +131,9 @@ So what are types good for? A few things come to mind immediately.
 * Documentation
 * Type safety
 
-When we discuss types in the broader JS ecosystem, in my perception, we talk almost exclusively only about these aspects. These are all valuable things to have. They are not free, however. I generally agree with Eric Elliott regarding the [Type(Script) Tax](https://medium.com/javascript-scene/the-typescript-tax-132ff4cb175b). Loosely summarized: 1) JS tooling isn’t too bad; 2) if you practice TDD and code reviews, type safety does not save you from too many additional bugs; 3) the cost of working with TS types is greater than the incremental advantages of TS over JS.
+When we discuss types in the broader JS ecosystem, in my perception, we talk almost exclusively only about these aspects. These are all valuable things to have. They are not free, however. I generally agree with Eric Elliott regarding the [Type(Script) Tax](https://medium.com/javascript-scene/the-typescript-tax-132ff4cb175b). Loosely summarized: 1) JS tooling isn’t too bad[^1]; 2) if you practice TDD and code reviews, type safety does not save you from too many additional bugs; 3) the cost of working with TS types is greater than the incremental advantages of TS over JS.
+
+[^1]: On [episode #90 of JS Party](https://changelog.com/jsparty/90#transcript-64), Chris Hiller shared how he used TS tooling with JSDoc in order to type-check plain JS. I have not tried this. But it sounds as if you could get most advantages of TS’s type checking without switching to TS. See also <https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html>.
 
 But wait, there is more. Nevermind structural typing. We need a place where to put the behavior of our things. As our things grow and can do more, we naturally put related behaviors close to each other and unrelated behaviors farther away. As we build cohesive modules, we naturally build types.
 
