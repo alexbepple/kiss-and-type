@@ -38,9 +38,22 @@ However, immutability is not enforced in any fashion on the objects.
 
 ## Functional programming
 
+### Data-last and curried
+
+```javascript
+> fooT = createType([ 'bar' ])
+…
+> fooT.set.bar(0, {})
+{ bar: 0 }
+> fooT.set.bar(0)({})
+{ bar: 0 }
+>
+```
+
+
 ### Composition
 
-All operations are functions that need no binding and thus lend themselves perfectly for functional composition.
+All functions need no binding and thus lend themselves perfectly for functional composition.
 
 ```javascript
 > fooT = createType([ 'bar' ])
