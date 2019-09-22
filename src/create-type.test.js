@@ -52,6 +52,11 @@ describe('KISS type', () => {
       __.assertThat(type.get.anAlias({}), __.is(0))
     })
   })
+
+  it('can be defined without array for prop in basic form', () => {
+    const type = createType('foo')
+    __.assertThat(type.get.foo({ foo: 0 }), __.is(0))
+  })
 })
 
 describe('Prop definition: canonical form', () => {

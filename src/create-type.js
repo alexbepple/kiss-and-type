@@ -47,6 +47,7 @@ export const createType = propDefs => {
   const pluckDefined = prop =>
     r.pipe(
       () => propDefs,
+      toArrayIfNecessary,
       r.chain(canonize),
       r.indexBy(r.prop('publicName')),
       r.pluck(prop),
