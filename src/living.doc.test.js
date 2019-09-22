@@ -41,11 +41,14 @@ describe('Defining types: Basic and extended forms', () => {
   })
 })
 
-describe('Lingo adopted from Ramda', () => {
+describe('Lingo inspired by Ramda', () => {
   const type = createType(['foo'])
 
   it('#pick', () => {
     __.assertThat(type.pick.foo({ foo: 0, sthElse: null }), __.is({ foo: 0 }))
+  })
+  it('#pickAll', () => {
+    __.assertThat(type.pickAll({ foo: 0, bar: 1 }), __.is({ foo: 0 }))
   })
   it('#pluck', () => {
     __.assertThat(

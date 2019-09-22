@@ -66,7 +66,7 @@ export const createType = propDefs => {
 
   const lenses = r.mergeWith(r.lens)(get)(set)
 
-  return r.map(preventAccessToUnknownProps)({
+  const fnsPerProp = r.map(preventAccessToUnknownProps)({
     props: r.map(r.always)(nameMap),
 
     get,
@@ -85,4 +85,6 @@ export const createType = propDefs => {
 
     over: r.map(r.over)(lenses)
   })
+
+  return r.merge(fnsPerProp, { pickAll: r.pick(r.values(nameMap)) })
 }

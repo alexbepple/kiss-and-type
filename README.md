@@ -71,9 +71,9 @@ All functions need no binding and thus lend themselves perfectly for functional 
 
 ### Familiar lingo
 
-`objOf`, `has` and `pluck` in the above example are derived from [Ramda](https://ramdajs.com/) lingo.
+`objOf`, `has` and `pluck` in the above example are inspired by [Ramda](https://ramdajs.com/) lingo.
 
-So are `pick`, `eq`, `over`.
+So are `pick`, `pickAll`, `eq`, `over`.
 
 
 ## Aliases
