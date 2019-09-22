@@ -1,3 +1,6 @@
+[![npm version](https://img.shields.io/npm/v/kiss-and-type.svg)](https://www.npmjs.com/package/kiss-and-type)
+
+
 # What is this?
 
 A lightweight approach to typing in plain JavaScript.
