@@ -5,7 +5,9 @@
   "scripts": {
     "test": "mocha --require esm",
     "build": "pika build",
-    "version": "npm run build"
+    "version": "npm run build",
+    "version_doc": "added by pika",
+    "publish": "pika publish"
   },
   "dependencies": {
     "ramda": "^0.26.1"
