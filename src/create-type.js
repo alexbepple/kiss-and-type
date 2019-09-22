@@ -32,6 +32,17 @@ export const canonize = r.pipe(
   r.unnest
 )
 
+const explodeOnUnknownProp = (obj, prop) => {
+  if (prop in obj) {
+    return obj[prop]
+  }
+
+  throw new TypeError(`Unknown property '${prop}'`)
+}
+
+const preventAccessToUnknownProps = x =>
+  new Proxy(x, { get: explodeOnUnknownProp })
+
 export const createType = propDefs => {
   const pluckDefined = prop =>
     r.pipe(
@@ -54,7 +65,7 @@ export const createType = propDefs => {
 
   const lenses = r.mergeWith(r.lens)(get)(set)
 
-  return {
+  return r.map(preventAccessToUnknownProps)({
     props: r.map(r.always)(nameMap),
 
     get,
@@ -72,5 +83,5 @@ export const createType = propDefs => {
     objOf: r.map(setFn => x => setFn(x)({}))(set),
 
     over: r.map(r.over)(lenses)
-  }
+  })
 }

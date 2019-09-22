@@ -18,9 +18,10 @@ Let’s look at the practical aspects first. – If you are really interested, m
 ```javascript
 > fooT = createType([ 'bar' ])
 …
-> fooT.get.baz({})
+> fooT.get.baz
 Thrown:
-TypeError: fooT.get.baz is not a function
+TypeError: Unknown property 'baz'
+…
 ```
 
 ## Immutable

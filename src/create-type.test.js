@@ -15,6 +15,13 @@ describe('KISS type', () => {
     it('gives write access to property', () => {
       __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(0))
     })
+    it('fails on attempted access to unknown props', () => {
+      const failsNicely = __.throws(
+        __.typedError(TypeError, __.containsString('unknown'))
+      )
+      __.assertThat(() => type.get.unknown, failsNicely)
+      __.assertThat(() => type.set.unknown, failsNicely)
+    })
   })
 
   describe('with getter enhancer', () => {
