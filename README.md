@@ -159,7 +159,14 @@ The marriage of these three – behavior honeypot, property access and FP – le
 I use `createType` to scaffold the property access. I then add interesting behavior as it emerges.
 
 
-# Footnotes
+## Footnotes
 
 1. <a class="anchor" id="1"></a> 
 On [episode #90 of JS Party](https://changelog.com/jsparty/90#transcript-64), Chris Hiller shared how he used TS tooling with JSDoc in order to type-check plain JS. I have not tried this. But it sounds as if you could get most advantages of TS’s type checking without switching to TS. See also <https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html>.
+
+
+# What’s with the name?
+
+[“Keep it simple stupid”](https://en.wikipedia.org/wiki/KISS_principle) came to mind immediately when I started looking for a name. There is a distinct lack of sophistication to this approach. Yet, it is useful. – So, “KISS” and “type” where there. I liked the association of “kiss and tell”. So I kept it.
+
+Added bonus: 😽 and type.
