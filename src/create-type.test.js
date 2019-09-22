@@ -128,6 +128,12 @@ describe('Canonical prop definition', () => {
     })
   })
 
+  describe('from extended definition with multiple props', () => {
+    it('derives definitions for all props', () => {
+      __.assertThat(canonizePropDef({ foo: {}, bar: {} }), __.hasSize(2))
+    })
+  })
+
   describe('from extended definition with one alias', () => {
     it('is just a shorthand to avoid array notation', () => {
       __.assertThat(

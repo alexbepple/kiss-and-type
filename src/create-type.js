@@ -1,22 +1,11 @@
 import * as r from 'ramda'
 
-const getOnlyKey = r.pipe(
-  r.keys,
-  r.head
-)
-const getOnlyValue = r.pipe(
-  r.values,
-  r.head
-)
 const toArrayIfNecessary = r.pipe(
   r.of,
   r.unnest
 )
 
-export const canonizePropDef = r.pipe(
-  r.when(r.is(String))(propName => ({ [propName]: {} })),
-  nestedDef =>
-    r.merge(getOnlyValue(nestedDef), { privateName: getOnlyKey(nestedDef) }),
+const canonizeObjectForm = r.pipe(
   r.evolve({ alias: toArrayIfNecessary }),
   r.merge({ alias: [] }),
   def =>
@@ -24,6 +13,13 @@ export const canonizePropDef = r.pipe(
       () => r.concat(def.alias, [def.privateName]),
       r.map(publicName => r.assoc('publicName', publicName, def))
     )()
+)
+export const canonizePropDef = r.pipe(
+  r.when(r.is(String))(propName => ({ [propName]: {} })),
+  r.mapObjIndexed((val, key) => r.assoc('privateName', key, val)),
+  r.map(canonizeObjectForm),
+  r.values,
+  r.unnest
 )
 
 export const createType = propDefs => {
