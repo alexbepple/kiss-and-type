@@ -1,0 +1,7 @@
+semi: false
+singleQuote: true
+arrowParens: always
+
+# repeated defaults in order to prevent XO from overriding them
+useTabs: false
+bracketSpacing: true

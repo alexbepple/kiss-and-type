@@ -1,7 +1,7 @@
 {
   "version": "0.2.2",
   "scripts": {
-    "test": "mocha --require esm",
+    "test": "xo && mocha --require esm",
     "build": "pika build",
     "version": "npm run build",
     "version_doc": "added by pika",
@@ -18,7 +18,8 @@
     "@pika/plugin-standard-pkg": "^0.6.0",
     "esm": "^3.2.25",
     "hamjest": "^3.2.5",
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "xo": "^0.24.0"
   },
   "@pika/pack": {
     "pipeline": [
@@ -40,6 +41,13 @@
         "@pika/plugin-build-types"
       ]
     ]
+  },
+  "xo": {
+    "envs": [
+      "node",
+      "mocha"
+    ],
+    "prettier": true
   },
   "name": "kiss-and-type",
   "description": "A lightweight approach to typing in plain JavaScript",
