@@ -69,7 +69,7 @@ export const createType = propDefs => {
     eq: r.map(fn => r.useWith(r.equals, [r.identity, fn]))(get),
 
     set,
-    objOf: r.map(setFn => x => setFn(x, {}))(set),
+    objOf: r.map(setFn => x => setFn(x)({}))(set),
 
     over: r.map(r.over)(lenses)
   }

@@ -61,4 +61,7 @@ describe('Setter enhancers', () => {
   it('enhance simple `set`', () => {
     __.assertThat(type.get.foo(type.set.foo(0.5)(null)), __.is(0))
   })
+  it('enhance other prop modifiers, e.g. `objOf`', () => {
+    __.assertThat(type.get.foo(type.objOf.foo(0.5)), __.is(0))
+  })
 })
