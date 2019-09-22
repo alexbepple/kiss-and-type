@@ -170,3 +170,11 @@ On [episode #90 of JS Party](https://changelog.com/jsparty/90#transcript-64), Ch
 [“Keep it simple stupid”](https://en.wikipedia.org/wiki/KISS_principle) came to mind immediately when I started looking for a name. There is a distinct lack of sophistication to this approach. Yet, it is useful. – So, “KISS” and “type” where there. I liked the association of “kiss and tell”. So I kept it.
 
 Added bonus: 😽 and type.
+
+
+# Thanksgiving
+
+* Abelson & Sussman for [“Structure and Interpretation of Computer Programs”](https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs). Polaris.
+* [Leonie Dreschler-Fischer](https://www.inf.uni-hamburg.de/inst/ab/sav/people/dreschler.html) at the University of Hamburg for introducing me to FP.
+* [Ramda](https://ramdajs.com/) for making FP practical in JS.
+* My colleagues in the recent years, who supported me in exploring FP and in developing this approach to typing.
