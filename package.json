@@ -1,7 +1,5 @@
 {
-  "name": "kiss-and-type",
   "version": "0.2.1",
-  "license": "MIT",
   "scripts": {
     "test": "mocha --require esm",
     "build": "pika build",
@@ -42,5 +40,15 @@
         "@pika/plugin-build-types"
       ]
     ]
-  }
+  },
+  "name": "kiss-and-type",
+  "description": "A lightweight approach to typing in plain JavaScript",
+  "keywords": [
+    "fp",
+    "functional",
+    "types"
+  ],
+  "author": "Alex Bepple <alex@bepple.de> (http://alex.bepple.de)",
+  "license": "MIT",
+  "repository": "https://github.com/alexbepple/kiss-and-type"
 }
