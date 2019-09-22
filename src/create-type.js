@@ -14,20 +14,20 @@ const toArrayIfNecessary = r.pipe(
 )
 
 export const canonizePropDef = r.pipe(
-  r.when(r.is(String))((propName) => ({ [propName]: {} })),
-  (nestedDef) =>
+  r.when(r.is(String))(propName => ({ [propName]: {} })),
+  nestedDef =>
     r.merge(getOnlyValue(nestedDef), { privateName: getOnlyKey(nestedDef) }),
   r.evolve({ alias: toArrayIfNecessary }),
   r.merge({ alias: [] }),
-  (def) =>
+  def =>
     r.pipe(
       () => r.concat(def.alias, [def.privateName]),
-      r.map((publicName) => r.assoc('publicName', publicName, def))
+      r.map(publicName => r.assoc('publicName', publicName, def))
     )()
 )
 
-export const createType = (propDefs) => {
-  const pluckDefined = (prop) =>
+export const createType = propDefs => {
+  const pluckDefined = prop =>
     r.pipe(
       () => propDefs,
       r.chain(canonizePropDef),
@@ -41,7 +41,7 @@ export const createType = (propDefs) => {
   const rawGet = r.map(r.prop)(nameMap)
   const get = r.mergeWith(r.pipe)(rawGet)(pluckDefined('get'))
 
-  const pickOne = (prop) => (obj) => ({ [prop]: get[prop](obj) })
+  const pickOne = prop => obj => ({ [prop]: get[prop](obj) })
 
   const rawSet = r.map(r.assoc)(nameMap)
   const set = r.mergeWith(r.pipe)(pluckDefined('set'))(rawSet)
@@ -54,16 +54,16 @@ export const createType = (propDefs) => {
     get,
     pick: r.map(pickOne)(nameMap),
     pluck: r.map(r.map)(get),
-    has: r.map((fn) =>
+    has: r.map(fn =>
       r.pipe(
         fn,
         r.complement(r.isNil)
       )
     )(get),
-    eq: r.map((fn) => r.useWith(r.equals, [r.identity, fn]))(get),
+    eq: r.map(fn => r.useWith(r.equals, [r.identity, fn]))(get),
 
     set,
-    objOf: r.map((setFn) => (x) => setFn(x, {}))(set),
+    objOf: r.map(setFn => x => setFn(x, {}))(set),
 
     over: r.map(r.over)(lenses)
   }
