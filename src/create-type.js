@@ -5,7 +5,16 @@ const toArrayIfNecessary = r.pipe(
   r.unnest
 )
 
-const canonizeObjectForm = r.pipe(
+/*
+Basic form (string form): 'foo'
+Extended form (nested object form): { _foo: { alias: 'foo' } }
+Canonical form: { privateName: '_foo', publicName: 'foo', … }
+*/
+
+const isBasicForm = r.is(String)
+const basicForm2extendedForm = propName => ({ [propName]: {} })
+
+const canonizeExtendedForm = r.pipe(
   r.evolve({ alias: toArrayIfNecessary }),
   r.merge({ alias: [] }),
   def =>
@@ -14,10 +23,11 @@ const canonizeObjectForm = r.pipe(
       r.map(publicName => r.assoc('publicName', publicName, def))
     )()
 )
-export const canonizePropDef = r.pipe(
-  r.when(r.is(String))(propName => ({ [propName]: {} })),
+
+export const canonize = r.pipe(
+  r.when(isBasicForm)(basicForm2extendedForm),
   r.mapObjIndexed((val, key) => r.assoc('privateName', key, val)),
-  r.map(canonizeObjectForm),
+  r.map(canonizeExtendedForm),
   r.values,
   r.unnest
 )
@@ -26,7 +36,7 @@ export const createType = propDefs => {
   const pluckDefined = prop =>
     r.pipe(
       () => propDefs,
-      r.chain(canonizePropDef),
+      r.chain(canonize),
       r.indexBy(r.prop('publicName')),
       r.pluck(prop),
       r.reject(r.isNil)

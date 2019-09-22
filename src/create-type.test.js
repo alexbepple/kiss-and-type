@@ -1,6 +1,6 @@
 import * as r from 'ramda'
 import * as __ from 'hamjest'
-import { canonizePropDef, createType } from './create-type'
+import { canonize, createType } from './create-type'
 
 describe('KISS type', () => {
   describe('in its most basic form', () => {
@@ -93,11 +93,11 @@ describe('KISS type', () => {
   })
 })
 
-describe('Canonical prop definition', () => {
-  describe('from basic prop definition (just a string)', () => {
+describe('Prop definition: canonical form', () => {
+  describe('from basic form (just a string)', () => {
     it('derives public and private names', () => {
       __.assertThat(
-        canonizePropDef('prop'),
+        canonize('prop'),
         __.contains(
           __.hasProperties({
             publicName: 'prop',
@@ -108,10 +108,10 @@ describe('Canonical prop definition', () => {
     })
   })
 
-  describe('from extended definition without aliases', () => {
+  describe('from extended form without aliases', () => {
     it('derives public and private names', () => {
       __.assertThat(
-        canonizePropDef({ prop: {} }),
+        canonize({ prop: {} }),
         __.contains(
           __.hasProperties({
             publicName: 'prop',
@@ -122,30 +122,30 @@ describe('Canonical prop definition', () => {
     })
     it('preserves other props', () => {
       __.assertThat(
-        canonizePropDef({ prop: { get: 'fdsa' } }),
+        canonize({ prop: { get: 'fdsa' } }),
         __.contains(__.hasProperties({ get: 'fdsa' }))
       )
     })
   })
 
-  describe('from extended definition with multiple props', () => {
+  describe('from extended form with multiple props', () => {
     it('derives definitions for all props', () => {
-      __.assertThat(canonizePropDef({ foo: {}, bar: {} }), __.hasSize(2))
+      __.assertThat(canonize({ foo: {}, bar: {} }), __.hasSize(2))
     })
   })
 
-  describe('from extended definition with one alias', () => {
+  describe('from extended form with one alias', () => {
     it('is just a shorthand to avoid array notation', () => {
       __.assertThat(
-        canonizePropDef({ prop: { alias: 'alias' } }),
-        __.is(canonizePropDef({ prop: { alias: ['alias'] } }))
+        canonize({ prop: { alias: 'alias' } }),
+        __.is(canonize({ prop: { alias: ['alias'] } }))
       )
     })
   })
-  describe('from extended definition with multiple aliases', () => {
+  describe('from extended form with multiple aliases', () => {
     it('derives public and private names', () => {
       __.assertThat(
-        canonizePropDef({ prop: { alias: ['alias'] } }),
+        canonize({ prop: { alias: ['alias'] } }),
         __.allOf(
           __.everyItem(__.hasProperties({ privateName: 'prop' })),
           __.containsInAnyOrder(
@@ -157,7 +157,7 @@ describe('Canonical prop definition', () => {
     })
     it('preserves other props', () => {
       __.assertThat(
-        canonizePropDef({ prop: { alias: ['alias'], get: 'fdsa' } }),
+        canonize({ prop: { alias: ['alias'], get: 'fdsa' } }),
         __.everyItem(__.hasProperty('get'))
       )
     })
