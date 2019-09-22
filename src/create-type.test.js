@@ -107,6 +107,7 @@ describe('Canonical prop definition', () => {
       )
     })
   })
+
   describe('from extended definition without aliases', () => {
     it('derives public and private names', () => {
       __.assertThat(
@@ -126,15 +127,16 @@ describe('Canonical prop definition', () => {
       )
     })
   })
+
   describe('from extended definition with one alias', () => {
-    it('is just a shorthand', () => {
+    it('is just a shorthand to avoid array notation', () => {
       __.assertThat(
-        canonizePropDef({ prop: { alias: ['alias'] } }),
-        __.is(canonizePropDef({ prop: { alias: 'alias' } }))
+        canonizePropDef({ prop: { alias: 'alias' } }),
+        __.is(canonizePropDef({ prop: { alias: ['alias'] } }))
       )
     })
   })
-  describe('from extended definition with aliases', () => {
+  describe('from extended definition with multiple aliases', () => {
     it('derives public and private names', () => {
       __.assertThat(
         canonizePropDef({ prop: { alias: ['alias'] } }),
