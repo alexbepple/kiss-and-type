@@ -1,7 +1,8 @@
 {
   "version": "0.2.2",
   "scripts": {
-    "test": "xo && mocha --require esm",
+    "lint": "xo",
+    "test": "mocha --require esm",
     "build": "pika build",
     "version": "npm run build",
     "version_doc": "added by pika",
