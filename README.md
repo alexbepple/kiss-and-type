@@ -7,7 +7,7 @@ You might enjoy some advantages of more common type systems without the need to 
 
 # Features
 
-Let’s look at the practical aspects first. If you are really interested, more general and slightly deeper thoughts on typing are [further down](#on-types).
+Let’s look at the practical aspects first. – If you are really interested, more general and slightly deeper thoughts on typing are [further down](#on-types).
 
 
 ## Some safety
