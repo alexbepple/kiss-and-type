@@ -2,6 +2,13 @@ import * as r from 'ramda'
 import * as __ from 'hamjest'
 import { createType } from './create-type'
 
+/*
+ * The intent of this spec is to be an exhaustive, yet brief API documentation.
+ *
+ * Edge cases and other tests that do not add to a user’s high-level
+ * understanding of the API, go somewhere else.
+ */
+
 const thing = { foo: 1, bar: 2, baz: 3 }
 
 describe('Defining types: Basic and extended forms', () => {
@@ -34,6 +41,41 @@ describe('Defining types: Basic and extended forms', () => {
   })
 })
 
+describe('Lingo adopted from Ramda', () => {
+  const type = createType(['foo'])
+
+  it('#pick', () => {
+    __.assertThat(type.pick.foo({ foo: 0, sthElse: null }), __.is({ foo: 0 }))
+  })
+  it('#pluck', () => {
+    __.assertThat(
+      type.pluck.foo([type.objOf.foo(0), type.objOf.foo(1)]),
+      __.is([0, 1])
+    )
+  })
+  it('#has', () => {
+    __.assertThat(type.has.foo({}), __.is(false))
+    __.assertThat(type.has.foo(type.objOf.foo(null)), __.is(false))
+    __.assertThat(type.has.foo(type.objOf.foo(0)), __.is(true))
+  })
+  it('#eq', () => {
+    const isFoo0 = type.eq.foo(0)
+    __.assertThat(isFoo0(type.objOf.foo(0)), __.is(true))
+    __.assertThat(isFoo0(type.objOf.foo(1)), __.is(false))
+  })
+
+  it('#objOf', () => {
+    __.assertThat(type.objOf.foo(0), __.is(type.set.foo(0)({})))
+  })
+
+  it('#over', () => {
+    __.assertThat(
+      type.get.foo(type.over.foo(r.inc)(type.objOf.foo(0))),
+      __.is(1)
+    )
+  })
+})
+
 describe('Aliases', () => {
   it('Yes, they alias.', () => {
     const type = createType([{ foo: { alias: 'fooAlias' } }])
@@ -51,7 +93,7 @@ describe('Getter enhancers', () => {
   it('enhance simple `get`', () => {
     __.assertThat(type.get.foo({}), __.is(0))
   })
-  it('enhance other prop retrievals, e.g. `pluck`', () => {
+  it('enhance other prop retrievals, e.g. #pluck', () => {
     __.assertThat(type.pluck.foo([{}, null]), __.is([0, 0]))
   })
 })
@@ -61,7 +103,7 @@ describe('Setter enhancers', () => {
   it('enhance simple `set`', () => {
     __.assertThat(type.get.foo(type.set.foo(0.5)(null)), __.is(0))
   })
-  it('enhance other prop modifiers, e.g. `objOf`', () => {
+  it('enhance other prop modifiers, e.g. #objOf', () => {
     __.assertThat(type.get.foo(type.objOf.foo(0.5)), __.is(0))
   })
 })

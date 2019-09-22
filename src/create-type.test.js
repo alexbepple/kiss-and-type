@@ -15,51 +15,13 @@ describe('KISS type', () => {
     it('gives write access to property', () => {
       __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(0))
     })
-    describe('adopts Ramda lingo', () => {
-      it('#pick', () => {
-        __.assertThat(
-          type.pick.prop({ prop: 0, sthElse: null }),
-          __.is({ prop: 0 })
-        )
-      })
-      it('#objOf', () => {
-        __.assertThat(type.objOf.prop(0), __.is(type.set.prop(0)({})))
-      })
-      it('#pluck', () => {
-        __.assertThat(
-          type.pluck.prop([type.objOf.prop(0), type.objOf.prop(1)]),
-          __.is([0, 1])
-        )
-      })
-      it('#has', () => {
-        __.assertThat(type.has.prop({}), __.is(false))
-        __.assertThat(type.has.prop(type.objOf.prop(null)), __.is(false))
-        __.assertThat(type.has.prop(type.objOf.prop(0)), __.is(true))
-      })
-      it('#eq', () => {
-        __.assertThat(type.eq.prop(0)(type.objOf.prop(0)), __.is(true))
-        __.assertThat(type.eq.prop(0)(type.objOf.prop(1)), __.is(false))
-      })
-      it('#over', () => {
-        __.assertThat(
-          type.over.prop(r.inc)(type.objOf.prop(0)),
-          __.is(type.objOf.prop(1))
-        )
-      })
-    })
   })
 
   describe('with getter enhancer', () => {
     const type = createType([{ prop: { get: r.defaultTo(0) } }])
 
-    it('applies enhancer upon raw value', () => {
-      __.assertThat(type.get.prop({}), __.is(0))
-    })
     it('uses enhancer for #pick', () => {
       __.assertThat(type.pick.prop({}), __.is({ prop: 0 }))
-    })
-    it('uses enhancer for #pluck', () => {
-      __.assertThat(type.pluck.prop([{}]), __.is([0]))
     })
   })
 
@@ -81,14 +43,6 @@ describe('KISS type', () => {
     ])
     it('applies enhancer upon raw value', () => {
       __.assertThat(type.get.anAlias({}), __.is(0))
-    })
-  })
-
-  describe('with setter enhancer', () => {
-    const type = createType([{ prop: { set: r.inc } }])
-
-    it('applies enhancer upon given value', () => {
-      __.assertThat(type.get.prop(type.set.prop(0)({})), __.is(1))
     })
   })
 })
