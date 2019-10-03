@@ -4,7 +4,7 @@ import { canonize, createType } from './create-type'
 
 describe('KISS type', () => {
   describe('in its most basic form', () => {
-    const type = createType(['prop'])
+    const type = createType(['prop', 'baz', 'bar'])
 
     it('exposes property name', () => {
       __.assertThat(type.props.prop(), __.is('prop'))
@@ -21,6 +21,14 @@ describe('KISS type', () => {
       )
       __.assertThat(() => type.get.unknown, failsNicely)
       __.assertThat(() => type.set.unknown, failsNicely)
+    })
+    it('type properties can be console logged', () => {
+      const doesNotThrowError = __.not(
+        __.throws(
+          __.typedError(TypeError, __.containsString('Cannot convert a Symbol value to a string'))
+        )
+      )
+      __.assertThat(() => console.log(type.props), doesNotThrowError)
     })
   })
 

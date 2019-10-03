@@ -33,6 +33,9 @@ export const canonize = r.pipe(
 )
 
 const explodeOnUnknownProp = (obj, prop) => {
+  if (typeof prop === 'symbol' || prop === 'inspect') {
+    return
+  }
   if (prop in obj) {
     return obj[prop]
   }
@@ -41,7 +44,9 @@ const explodeOnUnknownProp = (obj, prop) => {
 }
 
 const preventAccessToUnknownProps = x =>
-  new Proxy(x, { get: explodeOnUnknownProp })
+  new Proxy(x, {
+    get: explodeOnUnknownProp
+  })
 
 export const createType = propDefs => {
   const pluckDefined = prop =>
