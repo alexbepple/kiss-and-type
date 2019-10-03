@@ -33,6 +33,10 @@ export const canonize = r.pipe(
 )
 
 const explodeOnUnknownProp = (obj, prop) => {
+  if (prop === '@@functional/placeholder') {
+    return
+  }
+
   if (prop in obj) {
     return obj[prop]
   }

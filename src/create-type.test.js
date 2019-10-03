@@ -17,10 +17,23 @@ describe('KISS type', () => {
     })
     it('fails on attempted access to unknown props', () => {
       const failsNicely = __.throws(
-        __.typedError(TypeError, __.containsString('unknown'))
+        __.typedError(TypeError, __.containsString('Unknown'))
       )
       __.assertThat(() => type.get.unknown, failsNicely)
       __.assertThat(() => type.set.unknown, failsNicely)
+    })
+    it('all props can be retrieved with ramda', () => {
+      const doesNotThrow = __.not(
+        __.throws(
+          __.typedError(TypeError, __.containsString('Unknown'))
+        )
+      )
+      __.assertThat(() =>
+        r.pipe(
+          r.prop('props'),
+          r.values,
+        )(type)
+        , doesNotThrow)
     })
   })
 
