@@ -25,11 +25,7 @@ describe('KISS type', () => {
     it('all props can be retrieved with ramda', () => {
       const doesNotThrow = __.not(__.throws())
 
-      const getAllProps = r.pipe(
-        r.prop('props'),
-        r.values,
-      )
-      __.assertThat(() => getAllProps(type), doesNotThrow)
+      __.assertThat(() => type.allProps({ prop: 42 }), doesNotThrow)
     })
   })
 

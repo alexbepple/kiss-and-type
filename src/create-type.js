@@ -90,5 +90,13 @@ export const createType = propDefs => {
     over: r.map(r.over)(lenses)
   })
 
-  return r.merge(fnsPerProp, { pickAll: r.pick(r.values(nameMap)) })
+  const pickAll = r.pick(r.values(nameMap))
+
+  return r.merge(fnsPerProp, {
+    pickAll,
+    allProps: r.pipe(
+      pickAll,
+      r.values
+    )
+  })
 }
