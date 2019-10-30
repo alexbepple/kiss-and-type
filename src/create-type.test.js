@@ -4,7 +4,7 @@ import { canonize, createType } from './create-type'
 
 describe('KISS type', () => {
   describe('in its most basic form', () => {
-    const type = createType(['prop', 'baz', 'bar'])
+    const type = createType(['prop'])
 
     it('exposes property name', () => {
       __.assertThat(type.props.prop(), __.is('prop'))
