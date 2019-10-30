@@ -23,17 +23,13 @@ describe('KISS type', () => {
       __.assertThat(() => type.set.unknown, failsNicely)
     })
     it('all props can be retrieved with ramda', () => {
-      const doesNotThrow = __.not(
-        __.throws(
-          __.typedError(TypeError, __.containsString('Unknown'))
-        )
+      const doesNotThrow = __.not(__.throws())
+
+      const getAllProps = r.pipe(
+        r.prop('props'),
+        r.values,
       )
-      __.assertThat(() =>
-        r.pipe(
-          r.prop('props'),
-          r.values,
-        )(type)
-        , doesNotThrow)
+      __.assertThat(() => getAllProps(type), doesNotThrow)
     })
   })
 
