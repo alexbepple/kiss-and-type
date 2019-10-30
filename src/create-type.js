@@ -36,6 +36,7 @@ const explodeOnUnknownProp = (obj, prop) => {
   if (typeof prop === 'symbol' || prop === 'inspect') {
     return
   }
+
   if (prop in obj) {
     return obj[prop]
   }

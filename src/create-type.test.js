@@ -23,12 +23,7 @@ describe('KISS type', () => {
       __.assertThat(() => type.set.unknown, failsNicely)
     })
     it('type properties can be console logged', () => {
-      const doesNotThrowError = __.not(
-        __.throws(
-          __.typedError(TypeError, __.containsString('Cannot convert a Symbol value to a string'))
-        )
-      )
-      __.assertThat(() => console.log(type.props), doesNotThrowError)
+      __.assertThat(console.log(type.props))
     })
   })
 
