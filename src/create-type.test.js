@@ -27,7 +27,7 @@ describe('KISS type', () => {
 
       const getAllProps = r.pipe(
         r.prop('props'),
-        r.values,
+        r.values
       )
       __.assertThat(() => getAllProps(type), doesNotThrow)
     })
