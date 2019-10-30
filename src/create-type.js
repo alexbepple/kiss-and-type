@@ -33,6 +33,10 @@ export const canonize = r.pipe(
 )
 
 const explodeOnUnknownProp = (obj, prop) => {
+  if (prop === '@@functional/placeholder') {
+    return
+  }
+
   if (prop in obj) {
     return obj[prop]
   }
@@ -86,5 +90,13 @@ export const createType = propDefs => {
     over: r.map(r.over)(lenses)
   })
 
-  return r.merge(fnsPerProp, { pickAll: r.pick(r.values(nameMap)) })
+  const pickAll = r.pick(r.values(nameMap))
+
+  return r.merge(fnsPerProp, {
+    pickAll,
+    allProps: r.pipe(
+      pickAll,
+      r.values
+    )
+  })
 }
