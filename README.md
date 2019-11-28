@@ -190,8 +190,10 @@ Added bonus: 😽 and type.
 # Hacking
 
 * `yarn run check` lints and runs tests
+* `npm run release` checks and publishes using pika
+  * cannot be run with `yarn`
 
 Typical concerns
 
 * semantics: use enhancer or not?
-** hypothesis: in most cases probably yes
+  * hypothesis: in most cases probably yes
