@@ -25,6 +25,14 @@ describe('KISS type', () => {
     it('type properties can be console logged', () => {
       __.assertThat(console.log(type.props))
     })
+    describe('#findBy', () => {
+      it('is curryable', () => {
+        __.assertThat(
+          type.findBy.prop(null)([]),
+          __.is(type.findBy.prop(null, []))
+        )
+      })
+    })
   })
 
   describe('with getter enhancer', () => {
@@ -32,6 +40,10 @@ describe('KISS type', () => {
 
     it('uses enhancer for #pick', () => {
       __.assertThat(type.pick.prop({}), __.is({ prop: 0 }))
+    })
+    it('uses enhancer for #findBy', () => {
+      const item = {}
+      __.assertThat(type.findBy.prop(0)([item]), __.is(item))
     })
   })
 

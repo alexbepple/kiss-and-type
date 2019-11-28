@@ -190,3 +190,8 @@ Added bonus: 😽 and type.
 # Hacking
 
 * `yarn run check` lints and runs tests
+
+Typical concerns
+
+* semantics: use enhancer or not?
+** hypothesis: in most cases probably yes

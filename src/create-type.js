@@ -85,6 +85,9 @@ export const createType = propDefs => {
       )
     )(get),
     eq: r.map(fn => r.useWith(r.equals, [r.identity, fn]))(get),
+    findBy: r.map(fn =>
+      r.useWith(r.find, [val => item => r.equals(val, fn(item)), r.identity])
+    )(get),
 
     set,
     objOf: r.map(setFn => x => setFn(x)({}))(set),

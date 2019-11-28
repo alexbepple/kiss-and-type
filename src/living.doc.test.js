@@ -66,6 +66,16 @@ describe('Lingo inspired by Ramda', () => {
     __.assertThat(isFoo0(type.objOf.foo(0)), __.is(true))
     __.assertThat(isFoo0(type.objOf.foo(1)), __.is(false))
   })
+  it('#findBy', () => {
+    __.assertThat(
+      type.findBy.foo(1)([
+        type.objOf.foo(0),
+        type.objOf.foo(1),
+        type.objOf.foo(2)
+      ]),
+      __.is(type.objOf.foo(1))
+    )
+  })
 
   it('#objOf', () => {
     __.assertThat(type.objOf.foo(0), __.is(type.set.foo(0)({})))
