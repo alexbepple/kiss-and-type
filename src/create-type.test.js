@@ -22,6 +22,9 @@ describe('KISS type', () => {
       __.assertThat(() => type.get.unknown, failsNicely)
       __.assertThat(() => type.set.unknown, failsNicely)
     })
+    it('type properties can be console logged', () => {
+      __.assertThat(console.log(type.props))
+    })
   })
 
   describe('with getter enhancer', () => {
