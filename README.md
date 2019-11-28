@@ -185,3 +185,8 @@ Added bonus: 😽 and type.
 * [Leonie Dreschler-Fischer](https://www.inf.uni-hamburg.de/inst/ab/sav/people/dreschler.html) at the University of Hamburg for introducing me to FP.
 * [Ramda](https://ramdajs.com/) for making FP practical in JS.
 * My colleagues in the recent years, who supported me in exploring FP and in developing this approach to typing.
+
+
+# Hacking
+
+* `yarn run check` lints and runs tests
