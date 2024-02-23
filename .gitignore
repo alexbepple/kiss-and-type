@@ -5,3 +5,5 @@ yarn-error.log
 /pkg/
 
 /.idea/
+
+.DS_Store
