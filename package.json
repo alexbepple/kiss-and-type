@@ -22,15 +22,29 @@
     "esm": "^3.2.25",
     "hamjest": "^3.2.5",
     "mocha": "^6.2.0",
+    "np": "^9.2.0",
     "npm-run-all": "^4.1.5",
     "xo": "^0.24.0"
   },
   "@pika/pack": {
     "pipeline": [
-      ["@pika/plugin-standard-pkg", {"exclude": ["*.test.js"]}],
-      ["@pika/plugin-build-node"],
-      ["@pika/plugin-build-web"],
-      ["@pika/plugin-build-types"]
+      [
+        "@pika/plugin-standard-pkg",
+        {
+          "exclude": [
+            "*.test.js"
+          ]
+        }
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ],
+      [
+        "@pika/plugin-build-types"
+      ]
     ]
   },
   "xo": {
