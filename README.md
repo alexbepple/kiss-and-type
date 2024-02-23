@@ -174,7 +174,7 @@ On [episode #90 of JS Party](https://changelog.com/jsparty/90#transcript-64), Ch
 
 # What’s with the name?
 
-[“Keep it simple stupid”](https://en.wikipedia.org/wiki/KISS_principle) came to mind immediately when I started looking for a name. There is a distinct lack of sophistication to this approach. Yet, it is useful. – So, “KISS” and “type” where there. I liked the association of “kiss and tell”. So I kept it.
+[“Keep it simple stupid”](https://en.wikipedia.org/wiki/KISS_principle) came to mind immediately when I started looking for a name. There is a distinct lack of sophistication to this approach. Yet, it is useful. – So, “KISS” and “type” were there. I liked the association of “kiss and tell”. So I kept it.
 
 Added bonus: 😽 and type.
 
