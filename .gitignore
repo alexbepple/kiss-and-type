@@ -3,3 +3,5 @@ yarn-error.log
 
 # @pika/pack
 /pkg/
+
+/.idea/
