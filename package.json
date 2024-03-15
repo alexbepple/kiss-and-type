@@ -57,5 +57,8 @@
   ],
   "author": "Alex Bepple <alex@bepple.de> (http://alex.bepple.de)",
   "license": "MIT",
-  "repository": "https://github.com/alexbepple/kiss-and-type"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexbepple/kiss-and-type.git"
+  }
 }
