@@ -38,6 +38,10 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+
   "xo": {
     "envs": [
       "node",
