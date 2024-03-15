@@ -46,15 +46,14 @@ const preventAccessToUnknownProps = x =>
   })
 
 export const createType = propDefs => {
+  const propDefByName = rr.runPipe(
+    propDefs,
+    rr.toArrayIfNecessary,
+    r.chain(canonize),
+    r.indexBy(r.prop('publicName'))
+  )
   const pluckDefined = prop =>
-    rr.runPipe(
-      propDefs,
-      rr.toArrayIfNecessary,
-      r.chain(canonize),
-      r.indexBy(r.prop('publicName')),
-      r.pluck(prop),
-      r.reject(r.isNil)
-    )
+    rr.runPipe(propDefByName, r.pluck(prop), r.reject(r.isNil))
 
   const privateNameByPublicName = pluckDefined('privateName')
 

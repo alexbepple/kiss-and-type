@@ -147,7 +147,7 @@ describe('Prop definition: canonical form', () => {
 
 describe('Performance', () => {
   it('does not get worse', function() {
-    this.timeout(90)
+    this.timeout(70)
     for (let i = 0; i < 1000; i++) {
       createType(['foo'])
     }
