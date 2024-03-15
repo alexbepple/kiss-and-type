@@ -1,4 +1,5 @@
 import * as r from 'ramda'
+import * as rr from './ramda-plus'
 
 const toArrayIfNecessary = r.pipe(
   r.of,
@@ -18,10 +19,10 @@ const canonizeExtendedForm = r.pipe(
   r.evolve({ alias: toArrayIfNecessary }),
   r.mergeRight({ alias: [] }),
   def =>
-    r.pipe(
-      () => r.concat(def.alias, [def.privateName]),
+    rr.runPipe(
+      r.concat(def.alias, [def.privateName]),
       r.map(publicName => r.assoc('publicName', publicName, def))
-    )()
+    )
 )
 
 export const canonize = r.pipe(
@@ -51,32 +52,27 @@ const preventAccessToUnknownProps = x =>
 
 export const createType = propDefs => {
   const pluckDefined = prop =>
-    r.pipe(
-      () => propDefs,
+    rr.runPipe(
+      propDefs,
       toArrayIfNecessary,
       r.chain(canonize),
       r.indexBy(r.prop('publicName')),
       r.pluck(prop),
       r.reject(r.isNil)
-    )()
+    )
 
   const privateNameByPublicName = pluckDefined('privateName')
 
-  const getterByName = r.pipe(
-    () => privateNameByPublicName,
+  const getterByName = rr.runPipe(
+    privateNameByPublicName,
     r.mapObjIndexed((privateName, publicName) => {
       const rawGet = r.prop(privateName)
       const enhancedGet = r.defaultTo(r.identity)(
         pluckDefined('get')[publicName]
       )
-      return obj =>
-        r.pipe(
-          () => obj,
-          rawGet,
-          v => enhancedGet(v, obj)
-        )()
+      return obj => rr.runPipe(obj, rawGet, v => enhancedGet(v, obj))
     })
-  )()
+  )
 
   const pickOne = prop => obj => ({ [prop]: getterByName[prop](obj) })
 
