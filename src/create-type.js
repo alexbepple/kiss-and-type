@@ -16,7 +16,7 @@ const basicForm2extendedForm = propName => ({ [propName]: {} })
 
 const canonizeExtendedForm = r.pipe(
   r.evolve({ alias: toArrayIfNecessary }),
-  r.merge({ alias: [] }),
+  r.mergeRight({ alias: [] }),
   def =>
     r.pipe(
       () => r.concat(def.alias, [def.privateName]),
@@ -108,5 +108,5 @@ export const createType = propDefs => {
     over: r.map(r.over)(lenses)
   })
 
-  return r.merge(fnsPerProp, { pickAll: r.pick(r.values(nameMap)) })
+  return r.mergeRight(fnsPerProp, { pickAll: r.pick(r.values(nameMap)) })
 }
