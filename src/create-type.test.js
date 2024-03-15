@@ -23,9 +23,14 @@ describe('KISS type', () => {
       __.assertThat(() => type.get.unknown, failsNicely)
       __.assertThat(() => type.set.unknown, failsNicely)
     })
-    it('type properties can be enumerated', () => {
-      util.inspect(type.props)
-      // alternative formulation: console.log(type.props)
+    describe('type properties can be enumerated/inspected', () => {
+      it('by Node', () => {
+        util.inspect(type.props)
+        // alternative formulation: console.log(type.props)
+      })
+      it('by Ramda', () => {
+        __.assertThat(r.keys(type.props), __.is(['prop']))
+      })
     })
     describe('#findBy', () => {
       it('is curryable', () => {

@@ -29,7 +29,11 @@ export const canonizePropDef = r.pipe(
 )
 
 const explodeOnUnknownProp = (obj, prop) => {
-  if (typeof prop === 'symbol' || prop === 'inspect') {
+  if (
+    typeof prop === 'symbol' ||
+    prop === 'inspect' ||
+    prop === '@@functional/placeholder'
+  ) {
     return
   }
 
