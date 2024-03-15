@@ -3,7 +3,9 @@
   "scripts": {
     "release": "run-s check publish",
     "check": "run-p lint test",
+    "pre-commit": "run-p lint-fix test",
     "lint": "xo",
+    "lint-fix": "xo --fix",
     "test": "mocha --require esm",
     "build": "pika build",
     "version": "npm run build",
