@@ -1,11 +1,6 @@
 import * as r from 'ramda'
 import * as rr from './ramda-plus'
 
-const toArrayIfNecessary = r.pipe(
-  r.of,
-  r.unnest
-)
-
 /*
 Basic form (string form): 'foo'
 Extended form (nested object form): { _foo: { alias: 'foo' } }
@@ -16,7 +11,7 @@ const isBasicForm = r.is(String)
 const basicForm2extendedForm = propName => ({ [propName]: {} })
 
 const canonizeExtendedForm = r.pipe(
-  r.evolve({ alias: toArrayIfNecessary }),
+  r.evolve({ alias: rr.toArrayIfNecessary }),
   r.mergeRight({ alias: [] }),
   def =>
     rr.runPipe(
@@ -54,7 +49,7 @@ export const createType = propDefs => {
   const pluckDefined = prop =>
     rr.runPipe(
       propDefs,
-      toArrayIfNecessary,
+      rr.toArrayIfNecessary,
       r.chain(canonize),
       r.indexBy(r.prop('publicName')),
       r.pluck(prop),

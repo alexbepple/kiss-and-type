@@ -6,3 +6,8 @@ export const runPipeFrom = r.curry((buildPipe, first, ...args) =>
 )
 
 export const runPipe = runPipeFrom(r.pipe)
+
+export const toArrayIfNecessary = r.pipe(
+  r.of,
+  r.unnest
+)
