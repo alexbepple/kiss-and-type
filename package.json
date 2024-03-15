@@ -53,7 +53,10 @@
       "node",
       "mocha"
     ],
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "capitalized-comments": "off"
+    }
   },
   "name": "kiss-and-type",
   "description": "A lightweight approach to typing in plain JavaScript",

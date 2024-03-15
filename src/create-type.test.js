@@ -1,3 +1,4 @@
+import * as util from 'util'
 import * as r from 'ramda'
 import * as __ from 'hamjest'
 import { canonizePropDef, createType } from './create-type'
@@ -22,8 +23,9 @@ describe('KISS type', () => {
       __.assertThat(() => type.get.unknown, failsNicely)
       __.assertThat(() => type.set.unknown, failsNicely)
     })
-    it('type properties can be console logged', () => {
-      __.assertThat(console.log(type.props))
+    it('type properties can be enumerated', () => {
+      util.inspect(type.props)
+      // alternative formulation: console.log(type.props)
     })
     describe('#findBy', () => {
       it('is curryable', () => {
