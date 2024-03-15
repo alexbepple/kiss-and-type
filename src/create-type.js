@@ -62,8 +62,21 @@ export const createType = propDefs => {
 
   const nameMap = pluckDefined('privateName')
 
-  const rawGet = r.map(r.prop)(nameMap)
-  const get = r.mergeWith(r.pipe)(rawGet)(pluckDefined('get'))
+  const get = r.pipe(
+    () => nameMap,
+    r.mapObjIndexed((privateName, publicName) => {
+      const rawGet = r.prop(privateName)
+      const enhancedGet = r.defaultTo(r.identity)(
+        pluckDefined('get')[publicName]
+      )
+      return obj =>
+        r.pipe(
+          () => obj,
+          rawGet,
+          v => enhancedGet(v, obj)
+        )()
+    })
+  )()
 
   const pickOne = prop => obj => ({ [prop]: get[prop](obj) })
 

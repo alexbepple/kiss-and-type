@@ -109,6 +109,14 @@ describe('Getter enhancers', () => {
   it('enhance other prop retrievals, e.g. #pluck', () => {
     __.assertThat(type.pluck.foo([{}, null]), __.is([0, 0]))
   })
+
+  it('can optionally use the whole object', () => {
+    const typeWithVirtualProp = createType([
+      'a',
+      { aPlus1: { get: (_, obj) => obj.a + 1 } }
+    ])
+    __.assertThat(typeWithVirtualProp.get.aPlus1({ a: 1 }), __.is(2))
+  })
 })
 
 describe('Setter enhancers', () => {
