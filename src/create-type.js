@@ -60,10 +60,10 @@ export const createType = propDefs => {
       r.reject(r.isNil)
     )()
 
-  const nameMap = pluckDefined('privateName')
+  const privateNameByPublicName = pluckDefined('privateName')
 
-  const get = r.pipe(
-    () => nameMap,
+  const getterByName = r.pipe(
+    () => privateNameByPublicName,
     r.mapObjIndexed((privateName, publicName) => {
       const rawGet = r.prop(privateName)
       const enhancedGet = r.defaultTo(r.identity)(
@@ -78,35 +78,39 @@ export const createType = propDefs => {
     })
   )()
 
-  const pickOne = prop => obj => ({ [prop]: get[prop](obj) })
+  const pickOne = prop => obj => ({ [prop]: getterByName[prop](obj) })
 
-  const rawSet = r.map(r.assoc)(nameMap)
-  const set = r.mergeWith(r.pipe)(pluckDefined('set'))(rawSet)
+  const rawSetterByName = r.map(r.assoc)(privateNameByPublicName)
+  const setterByName = r.mergeWith(r.pipe)(pluckDefined('set'))(rawSetterByName)
 
-  const lenses = r.mergeWith(r.lens)(get)(set)
+  const lensByName = r.mergeWith(r.lens)(getterByName)(setterByName)
 
-  const fnsPerProp = r.map(preventAccessToUnknownProps)({
-    props: r.map(r.always)(nameMap),
+  const propLevelFns = r.map(preventAccessToUnknownProps)({
+    props: r.map(r.always)(privateNameByPublicName),
 
-    get,
-    pick: r.map(pickOne)(nameMap),
-    pluck: r.map(r.map)(get),
+    get: getterByName,
+    pick: r.map(pickOne)(privateNameByPublicName),
+    pluck: r.map(r.map)(getterByName),
     has: r.map(fn =>
       r.pipe(
         fn,
         r.complement(r.isNil)
       )
-    )(get),
-    eq: r.map(fn => r.useWith(r.equals, [r.identity, fn]))(get),
+    )(getterByName),
+    eq: r.map(fn => r.useWith(r.equals, [r.identity, fn]))(getterByName),
     findBy: r.map(fn =>
       r.useWith(r.find, [val => item => r.equals(val, fn(item)), r.identity])
-    )(get),
+    )(getterByName),
 
-    set,
-    objOf: r.map(setFn => x => setFn(x)({}))(set),
+    set: setterByName,
+    objOf: r.map(setFn => x => setFn(x)({}))(setterByName),
 
-    over: r.map(r.over)(lenses)
+    over: r.map(r.over)(lensByName)
   })
 
-  return r.mergeRight(fnsPerProp, { pickAll: r.pick(r.values(nameMap)) })
+  const typeLevelFns = {
+    pickAll: r.pick(r.values(privateNameByPublicName))
+  }
+
+  return r.mergeRight(propLevelFns, typeLevelFns)
 }
