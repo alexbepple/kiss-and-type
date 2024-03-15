@@ -20,7 +20,7 @@ const canonizeExtendedForm = r.pipe(
     )
 )
 
-export const canonize = r.pipe(
+export const canonizePropDef = r.pipe(
   r.when(isBasicForm)(basicForm2extendedForm),
   r.mapObjIndexed((val, key) => r.assoc('privateName', key, val)),
   r.map(canonizeExtendedForm),
@@ -49,7 +49,7 @@ export const createType = propDefs => {
   const propDefByName = rr.runPipe(
     propDefs,
     rr.toArrayIfNecessary,
-    r.chain(canonize),
+    r.chain(canonizePropDef),
     r.indexBy(r.prop('publicName'))
   )
   const pluckDefined = prop =>
