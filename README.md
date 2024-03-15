@@ -184,7 +184,7 @@ Added bonus: 😽 and type.
 * Abelson & Sussman for [“Structure and Interpretation of Computer Programs”](https://en.wikipedia.org/wiki/Structure_and_Interpretation_of_Computer_Programs). Polaris.
 * [Leonie Dreschler-Fischer](https://www.inf.uni-hamburg.de/inst/ab/sav/people/dreschler.html) at the University of Hamburg for introducing me to FP.
 * [Ramda](https://ramdajs.com/) for making FP practical in JS.
-* My colleagues in the recent years, who supported me in exploring FP and in developing this approach to typing.
+* My colleagues in recent years, who supported me in exploring FP and in developing this approach to typing.
 
 
 # Hacking
