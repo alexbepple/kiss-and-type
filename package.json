@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0-7",
+  "version": "0.7.0-8",
   "scripts": {
     "release": "run-s check build publish",
     "check": "run-p lint test",
@@ -41,7 +41,6 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-
   "xo": {
     "envs": [
       "node",
