@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0-13",
+  "version": "0.7.0-14",
   "scripts": {
     "release": "run-s check build publish",
     "check": "run-p lint test",
