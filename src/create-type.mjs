@@ -1,5 +1,5 @@
 import * as r from 'ramda'
-import * as rr from './ramda-plus'
+import * as rr from './ramda-plus/index.mjs'
 
 /*
 Basic form (string form): 'foo'

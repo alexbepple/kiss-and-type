@@ -1,6 +1,6 @@
 import * as r from 'ramda'
 import * as __ from 'hamjest'
-import { createType } from './create-type'
+import { createType } from './create-type.mjs'
 
 /*
  * The intent of this spec is to be an exhaustive, yet brief API documentation.

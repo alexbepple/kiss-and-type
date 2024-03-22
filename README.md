@@ -132,7 +132,7 @@ Interfaces, inheritance, mixins are largely unexplored at the moment. The value 
 }
 ```
 
-Please refer to the [living doc](./src/living.doc.test.js) for details and examples. Should anything be unclear, kindly open an issue, or even a PR.
+Please refer to the [living doc](./src/living.doc.test.mjs) for details and examples. Should anything be unclear, kindly open an issue, or even a PR.
 
 
 # On types

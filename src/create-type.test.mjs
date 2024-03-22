@@ -1,7 +1,7 @@
 import * as util from 'util'
 import * as r from 'ramda'
 import * as __ from 'hamjest'
-import { canonizePropDef, createType } from './create-type'
+import { canonizePropDef, createType } from './create-type.mjs'
 
 describe('KISS type', () => {
   describe('in its most basic form', () => {
