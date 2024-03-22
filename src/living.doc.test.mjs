@@ -128,3 +128,16 @@ describe('Setter enhancers', () => {
     __.assertThat(type.get.foo(type.objOf.foo(0.5)), __.is(0))
   })
 })
+
+describe('Create objects without repeating the type name over and over again', () => {
+  const type = createType(['foo', 'bar'])
+  it('using an init function that returns a list of fns that are then applied to init the obj', () => {
+    const obj = type.create(({set}) => [set.foo('foo'), set.bar('bar')])
+    __.assertThat(type.has.foo(obj), __.is(true))
+    __.assertThat(type.has.bar(obj), __.is(true))
+  })
+  it('init fn may return just one fn', () => {
+    const obj = type.create(({set}) => set.foo('foo'))
+    __.assertThat(type.has.foo(obj), __.is(true))
+  })
+})

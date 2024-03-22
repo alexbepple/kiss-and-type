@@ -103,7 +103,11 @@ export const createType = propDefs => {
   })
 
   const typeLevelFns = {
-    pickAll: r.pick(r.values(privateNameByPublicName))
+    pickAll: r.pick(r.values(privateNameByPublicName)),
+    create: (fn) => {
+      const listOfFnsToApply = rr.toArrayIfNecessary(fn(propLevelFns))
+      return r.pipe(...listOfFnsToApply)({})
+    }
   }
 
   return r.mergeRight(propLevelFns, typeLevelFns)
