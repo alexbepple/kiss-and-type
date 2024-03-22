@@ -190,8 +190,7 @@ Added bonus: 😽 and type.
 # Hacking
 
 * `yarn run check` lints and runs tests
-* `npm run release` checks and publishes using pika
-  * cannot be run with `yarn`
+* `yarn run release` checks and publishes
 
 Typical concerns
 
