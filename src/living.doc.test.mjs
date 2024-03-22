@@ -27,14 +27,14 @@ describe('Defining types: Basic and extended forms', () => {
     const type = createType([
       'foo',
       { bar: { alias: 'barAlias' } },
-      { baz: { alias: 'bazAlias' } }
+      { baz: { alias: 'bazAlias' } },
     ])
     __.assertThat(type.get.bazAlias(thing), __.is(3))
   })
   it('In such a case, they can be merged.', () => {
     const type = createType([
       'foo',
-      { bar: { alias: 'barAlias' }, baz: { alias: 'bazAlias' } }
+      { bar: { alias: 'barAlias' }, baz: { alias: 'bazAlias' } },
     ])
     __.assertThat(type.get.barAlias(thing), __.is(2))
     __.assertThat(type.get.bazAlias(thing), __.is(3))
@@ -53,7 +53,7 @@ describe('Lingo inspired by Ramda', () => {
   it('#pluck', () => {
     __.assertThat(
       type.pluck.foo([type.objOf.foo(0), type.objOf.foo(1)]),
-      __.is([0, 1])
+      __.is([0, 1]),
     )
   })
   it('#has', () => {
@@ -71,9 +71,9 @@ describe('Lingo inspired by Ramda', () => {
       type.findBy.foo(1)([
         type.objOf.foo(0),
         type.objOf.foo(1),
-        type.objOf.foo(2)
+        type.objOf.foo(2),
       ]),
-      __.is(type.objOf.foo(1))
+      __.is(type.objOf.foo(1)),
     )
   })
 
@@ -84,7 +84,7 @@ describe('Lingo inspired by Ramda', () => {
   it('#over', () => {
     __.assertThat(
       type.get.foo(type.over.foo(r.inc)(type.objOf.foo(0))),
-      __.is(1)
+      __.is(1),
     )
   })
 })
@@ -113,7 +113,7 @@ describe('Getter enhancers', () => {
   it('can optionally use the whole object', () => {
     const typeWithVirtualProp = createType([
       'a',
-      { aPlus1: { get: (_, obj) => obj.a + 1 } }
+      { aPlus1: { get: (_, obj) => obj.a + 1 } },
     ])
     __.assertThat(typeWithVirtualProp.get.aPlus1({ a: 1 }), __.is(2))
   })
@@ -132,12 +132,12 @@ describe('Setter enhancers', () => {
 describe('Create objects without repeating the type name over and over again', () => {
   const type = createType(['foo', 'bar'])
   it('using an init function that returns a list of fns that are then applied to init the obj', () => {
-    const obj = type.create(({set}) => [set.foo('foo'), set.bar('bar')])
+    const obj = type.create(({ set }) => [set.foo('foo'), set.bar('bar')])
     __.assertThat(type.has.foo(obj), __.is(true))
     __.assertThat(type.has.bar(obj), __.is(true))
   })
   it('init fn may return just one fn', () => {
-    const obj = type.create(({set}) => set.foo('foo'))
+    const obj = type.create(({ set }) => set.foo('foo'))
     __.assertThat(type.has.foo(obj), __.is(true))
   })
 })

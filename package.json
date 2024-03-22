@@ -22,7 +22,7 @@
     "npm-run-all": "^4.1.5",
     "typescript": "^5.4.2",
     "unbuild": "^2.0.0",
-    "xo": "^0.24.0"
+    "xo": "^0.58.0"
   },
   "devDependencies_doc": {
     "typescript": "required by unbuild, even if unused"
@@ -52,7 +52,9 @@
     ],
     "prettier": true,
     "rules": {
-      "capitalized-comments": "off"
+      "capitalized-comments": "off",
+      "unicorn/no-array-callback-reference": "off",
+      "unicorn/prevent-abbreviations": "off"
     }
   },
   "name": "kiss-and-type",

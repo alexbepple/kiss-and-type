@@ -1,4 +1,4 @@
-import * as util from 'util'
+import * as util from 'node:util'
 import * as r from 'ramda'
 import * as __ from 'hamjest'
 import { canonizePropDef, createType } from './create-type.mjs'
@@ -18,7 +18,7 @@ describe('KISS type', () => {
     })
     it('fails on attempted access to unknown props', () => {
       const failsNicely = __.throws(
-        __.typedError(TypeError, __.containsString('unknown'))
+        __.typedError(TypeError, __.containsString('unknown')),
       )
       __.assertThat(() => type.get.unknown, failsNicely)
       __.assertThat(() => type.set.unknown, failsNicely)
@@ -36,7 +36,7 @@ describe('KISS type', () => {
       it('is curryable', () => {
         __.assertThat(
           type.findBy.prop(null)([]),
-          __.is(type.findBy.prop(null, []))
+          __.is(type.findBy.prop(null, [])),
         )
       })
     })
@@ -68,7 +68,7 @@ describe('KISS type', () => {
 
   describe('with alias and getter enhancer', () => {
     const type = createType([
-      { prop: { alias: 'anAlias', get: r.defaultTo(0) } }
+      { prop: { alias: 'anAlias', get: r.defaultTo(0) } },
     ])
     it('applies enhancer upon raw value', () => {
       __.assertThat(type.get.anAlias({}), __.is(0))
@@ -89,9 +89,9 @@ describe('Prop definition: canonical form', () => {
         __.contains(
           __.hasProperties({
             publicName: 'prop',
-            privateName: 'prop'
-          })
-        )
+            privateName: 'prop',
+          }),
+        ),
       )
     })
   })
@@ -103,15 +103,15 @@ describe('Prop definition: canonical form', () => {
         __.contains(
           __.hasProperties({
             publicName: 'prop',
-            privateName: 'prop'
-          })
-        )
+            privateName: 'prop',
+          }),
+        ),
       )
     })
     it('preserves other props', () => {
       __.assertThat(
         canonizePropDef({ prop: { get: 'fdsa' } }),
-        __.contains(__.hasProperties({ get: 'fdsa' }))
+        __.contains(__.hasProperties({ get: 'fdsa' })),
       )
     })
   })
@@ -126,7 +126,7 @@ describe('Prop definition: canonical form', () => {
     it('is just a shorthand to avoid array notation', () => {
       __.assertThat(
         canonizePropDef({ prop: { alias: 'alias' } }),
-        __.is(canonizePropDef({ prop: { alias: ['alias'] } }))
+        __.is(canonizePropDef({ prop: { alias: ['alias'] } })),
       )
     })
   })
@@ -138,22 +138,22 @@ describe('Prop definition: canonical form', () => {
           __.everyItem(__.hasProperties({ privateName: 'prop' })),
           __.containsInAnyOrder(
             __.hasProperties({ publicName: 'prop' }),
-            __.hasProperties({ publicName: 'alias' })
-          )
-        )
+            __.hasProperties({ publicName: 'alias' }),
+          ),
+        ),
       )
     })
     it('preserves other props', () => {
       __.assertThat(
         canonizePropDef({ prop: { alias: ['alias'], get: 'fdsa' } }),
-        __.everyItem(__.hasProperty('get'))
+        __.everyItem(__.hasProperty('get')),
       )
     })
   })
 })
 
 describe('Performance', () => {
-  it('does not get worse', function() {
+  it('does not get worse', function () {
     this.timeout(70)
     for (let i = 0; i < 1000; i++) {
       createType(['foo'])

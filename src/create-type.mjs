@@ -8,16 +8,16 @@ Canonical form: { privateName: '_foo', publicName: 'foo', … }
 */
 
 const isBasicForm = r.is(String)
-const basicForm2extendedForm = propName => ({ [propName]: {} })
+const basicForm2extendedForm = (propName) => ({ [propName]: {} })
 
 const canonizeExtendedForm = r.pipe(
   r.evolve({ alias: rr.toArrayIfNecessary }),
   r.mergeRight({ alias: [] }),
-  def =>
+  (def) =>
     rr.runPipe(
       r.concat(def.alias, [def.privateName]),
-      r.map(publicName => r.assoc('publicName', publicName, def))
-    )
+      r.map((publicName) => r.assoc('publicName', publicName, def)),
+    ),
 )
 
 export const canonizePropDef = r.pipe(
@@ -25,7 +25,7 @@ export const canonizePropDef = r.pipe(
   r.mapObjIndexed((val, key) => r.assoc('privateName', key, val)),
   r.map(canonizeExtendedForm),
   r.values,
-  r.unnest
+  r.unnest,
 )
 
 const explodeOnUnknownProp = (obj, prop) => {
@@ -44,19 +44,19 @@ const explodeOnUnknownProp = (obj, prop) => {
   throw new TypeError(`Unknown property '${prop}'`)
 }
 
-const preventAccessToUnknownProps = x =>
+const preventAccessToUnknownProps = (x) =>
   new Proxy(x, {
-    get: explodeOnUnknownProp
+    get: explodeOnUnknownProp,
   })
 
-export const createType = propDefs => {
+export const createType = (propDefs) => {
   const propDefByName = rr.runPipe(
     propDefs,
     rr.toArrayIfNecessary,
     r.chain(canonizePropDef),
-    r.indexBy(r.prop('publicName'))
+    r.indexBy(r.prop('publicName')),
   )
-  const pluckDefined = prop =>
+  const pluckDefined = (prop) =>
     rr.runPipe(propDefByName, r.pluck(prop), r.reject(r.isNil))
 
   const privateNameByPublicName = pluckDefined('privateName')
@@ -66,13 +66,13 @@ export const createType = propDefs => {
     r.mapObjIndexed((privateName, publicName) => {
       const rawGet = r.prop(privateName)
       const enhancedGet = r.defaultTo(r.identity)(
-        pluckDefined('get')[publicName]
+        pluckDefined('get')[publicName],
       )
-      return obj => rr.runPipe(obj, rawGet, v => enhancedGet(v, obj))
-    })
+      return (obj) => rr.runPipe(obj, rawGet, (v) => enhancedGet(v, obj))
+    }),
   )
 
-  const pickOne = prop => obj => ({ [prop]: getterByName[prop](obj) })
+  const pickOne = (prop) => (obj) => ({ [prop]: getterByName[prop](obj) })
 
   const rawSetterByName = r.map(r.assoc)(privateNameByPublicName)
   const setterByName = r.mergeWith(r.pipe)(pluckDefined('set'))(rawSetterByName)
@@ -85,29 +85,27 @@ export const createType = propDefs => {
     get: getterByName,
     pick: r.map(pickOne)(privateNameByPublicName),
     pluck: r.map(r.map)(getterByName),
-    has: r.map(fn =>
-      r.pipe(
-        fn,
-        r.complement(r.isNil)
-      )
-    )(getterByName),
-    eq: r.map(fn => r.useWith(r.equals, [r.identity, fn]))(getterByName),
-    findBy: r.map(fn =>
-      r.useWith(r.find, [val => item => r.equals(val, fn(item)), r.identity])
+    has: r.map((fn) => r.pipe(fn, r.complement(r.isNil)))(getterByName),
+    eq: r.map((fn) => r.useWith(r.equals, [r.identity, fn]))(getterByName),
+    findBy: r.map((fn) =>
+      r.useWith(r.find, [
+        (val) => (item) => r.equals(val, fn(item)),
+        r.identity,
+      ]),
     )(getterByName),
 
     set: setterByName,
-    objOf: r.map(setFn => x => setFn(x)({}))(setterByName),
+    objOf: r.map((setFn) => (x) => setFn(x)({}))(setterByName),
 
-    over: r.map(r.over)(lensByName)
+    over: r.map(r.over)(lensByName),
   })
 
   const typeLevelFns = {
     pickAll: r.pick(r.values(privateNameByPublicName)),
-    create: (fn) => {
+    create(fn) {
       const listOfFnsToApply = rr.toArrayIfNecessary(fn(propLevelFns))
       return r.pipe(...listOfFnsToApply)({})
-    }
+    },
   }
 
   return r.mergeRight(propLevelFns, typeLevelFns)
