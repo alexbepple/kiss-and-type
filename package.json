@@ -7,8 +7,7 @@
     "lint": "xo",
     "lint-fix": "xo --fix",
     "test": "mocha --require esm",
-    "build": "unbuild",
-    "publish": "np --no-cleanup"
+    "build": "unbuild"
   },
   "dependencies": {
     "ramda": "^0.26.1"
