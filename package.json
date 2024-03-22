@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0-19",
+  "version": "0.7.0-20",
   "scripts": {
     "prerelease": "run-s check build",
     "release": "np --yolo",
