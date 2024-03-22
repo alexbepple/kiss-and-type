@@ -23,7 +23,7 @@
     "xo": "^0.24.0"
   },
   "devDependencies_doc": {
-    "typescript": "seems to be required by unbuild"
+    "typescript": "required by unbuild, even if unused"
   },
   "type": "module",
   "exports": {
