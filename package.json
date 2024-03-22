@@ -1,14 +1,14 @@
 {
   "version": "0.7.0-19",
   "scripts": {
-    "release": "run-s check build my_publish",
+    "prerelease": "run-s check build",
+    "release": "np --yolo",
     "check": "run-p lint test",
     "pre-commit": "run-p lint-fix test",
     "lint": "xo",
     "lint-fix": "xo --fix",
     "test": "mocha",
-    "build": "unbuild",
-    "my_publish": "np --yolo"
+    "build": "unbuild"
   },
   "dependencies": {
     "ramda": "^0.26.1"
